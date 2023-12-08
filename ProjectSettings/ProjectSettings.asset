@@ -617,10 +617,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: f43dde4d-c454-4d74-8130-df45e97acb21
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: ARTestTask (1)
+  organizationId: cogito-34695003-b461-43d3-847d-73bc6f177692
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
