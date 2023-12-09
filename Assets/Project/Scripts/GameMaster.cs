@@ -11,6 +11,7 @@ public class GameMaster : MonoBehaviour
     private bool IsGameLoaded => Instance == null ? false : Instance._isGameLoaded;
     [SerializeField] private MainConfig _mainConfig;
     public static MainConfig MainConfig => _instance._mainConfig;
+    
 
     private void Awake()
     {
@@ -24,7 +25,14 @@ public class GameMaster : MonoBehaviour
 
     private IEnumerator Load()
     {
-        yield return null;
+
+        yield return LoadBoardGame();
         _isGameLoaded = true;
+    }
+
+    private IEnumerator LoadBoardGame()
+    {
+        //var boardGameConfig = MainConfig.BoardGameConfig;
+        yield return null;
     }
 }

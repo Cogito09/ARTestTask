@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using Project.Configs;
+using UnityEngine;
 
 namespace Project.Scripts
 {
     [CreateAssetMenu(fileName = "MainConfig", menuName = "Configs/MainConfig")]
     public class MainConfig : ScriptableObject
     {
-        
+        [SerializeField] private PrefabsConfig PrefabsConfig;
         
         private static MainConfig _mainConfig;
         public static MainConfig Instance =>
