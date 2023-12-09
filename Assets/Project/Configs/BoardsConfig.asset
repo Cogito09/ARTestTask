@@ -13,18 +13,9 @@ MonoBehaviour:
   m_Name: BoardsConfig
   m_EditorClassIdentifier: 
   Boards:
-  - Id: 0
-    DevName: 
-    BoardPrefab: 1
-    DicePrefab: 2
-    DesktopPrefab: 3
-  - Id: 0
-    DevName: 
-    BoardPrefab: 0
-    DicePrefab: 0
-    DesktopPrefab: 0
-  - Id: 0
-    DevName: 
-    BoardPrefab: 0
-    DicePrefab: 0
-    DesktopPrefab: 0
+  - Id: 1
+    DevName: DemoBoard
+    BoardPrefab: 4
+    DicePrefab: 3
+    DesktopPrefab: 1
+    PointerPrefab: 2

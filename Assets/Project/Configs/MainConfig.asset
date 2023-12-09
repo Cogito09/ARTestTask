@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ec89d8fd0744037a32302638c2964dd, type: 3}
   m_Name: MainConfig
   m_EditorClassIdentifier: 
-  PrefabsConfig: {fileID: 11400000, guid: ae847eab23fd1954a85703e7efe1f1b0, type: 2}
+  _prefabsConfig: {fileID: 11400000, guid: ae847eab23fd1954a85703e7efe1f1b0, type: 2}
+  _boardsConfig: {fileID: 11400000, guid: 54eff5b8775efc249ba1747f11f4c555, type: 2}
+  _gameplayConfig: {fileID: 11400000, guid: ede4fd9e5fcf15b4a9dd2452217c5f89, type: 2}

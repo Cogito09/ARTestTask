@@ -25,3 +25,7 @@ MonoBehaviour:
     DevName: Dice_12
     Object: {fileID: 5607427104481642602, guid: 1e3f9b0dfa31bd04280fe4827f2423bf,
       type: 3}
+  - Id: 4
+    DevName: Board
+    Object: {fileID: 5308765950607389488, guid: 12b5925ef2d37964898edafa647c757d,
+      type: 3}

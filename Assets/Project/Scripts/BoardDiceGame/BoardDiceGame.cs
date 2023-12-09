@@ -2,10 +2,23 @@
 
 public class BoardDiceGame : IDisposable
 {
-    [Prefab] public int BoardPrefab;
+    private BoardDiceGameSave _save;
+    public BoardConfig BoardConfig;
     
+    
+    public BoardDiceGame(BoardConfig boardConfig, BoardDiceGameSave boardDiceGameSave)
+    {
+        _save = boardDiceGameSave;
+        BoardConfig = boardConfig;
+        
+    }
     
     public void Dispose()
     {
+    }
+
+    public void Initialize()
+    {
+
     }
 }

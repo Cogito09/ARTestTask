@@ -9,4 +9,5 @@ public class BoardConfig
     [Prefab] public int BoardPrefab;
     [Prefab] public int DicePrefab;
     [Prefab] public int DesktopPrefab;
+    [Prefab] public int PointerPrefab;
 }
