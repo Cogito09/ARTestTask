@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6546d0ca9c14af9ac510208c1893ef2, type: 3}
+  m_Name: PrefabsConfig
+  m_EditorClassIdentifier: 
+  Prefabs:
+  - Id: 1
+    DevName: BaseDesktop_1
+    Object: {fileID: 8471225540315852477, guid: a8e0c8e882d0d3d438f6bb0ff1324fbd,
+      type: 3}
+  - Id: 2
+    DevName: Hand_Type_1
+    Object: {fileID: 4563905001962772374, guid: 26328588d42b8c244ac0e41bed9e4b08,
+      type: 3}
+  - Id: 3
+    DevName: Dice_12
+    Object: {fileID: 5607427104481642602, guid: 1e3f9b0dfa31bd04280fe4827f2423bf,
+      type: 3}

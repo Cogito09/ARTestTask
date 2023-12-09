@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ec89d8fd0744037a32302638c2964dd, type: 3}
   m_Name: MainConfig
   m_EditorClassIdentifier: 
+  PrefabsConfig: {fileID: 11400000, guid: ae847eab23fd1954a85703e7efe1f1b0, type: 2}

@@ -7,15 +7,17 @@ namespace Project.Scripts
     public class MainConfig : ScriptableObject
     {
         [SerializeField] private PrefabsConfig PrefabsConfig;
-        
-        private static MainConfig _mainConfig;
+        public static PrefabsConfig Prefabs => _instance.PrefabsConfig;
+        private static MainConfig _instance;
         public static MainConfig Instance =>
 #if !UNITY_EDITOR
-             _mainConfig ?? (_mainConfig = GameMaster.MainConfig);
+             _instance ?? (_instance = GameMaster.MainConfig);
 #endif
 #if UNITY_EDITOR
-            _mainConfig ? _mainConfig : Application.isEditor ? (_mainConfig = GetConfigAsset()) : GameMaster.MainConfig;
-        
+            _instance ? _instance : Application.isEditor ? (_instance = GetConfigAsset()) : GameMaster.MainConfig;
+
+
+
         private static MainConfig GetConfigAsset()
         {
             var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<MainConfig>("Assets/Project/Configs/MainConfig.asset");
