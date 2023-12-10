@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4512680365916201350
+--- !u!1 &7123871852565020290
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4512680365916201348}
-  - component: {fileID: 4512680365916201351}
+  - component: {fileID: 5268584955782144945}
+  - component: {fileID: 7788514299747533267}
   m_Layer: 0
-  m_Name: InputBehaviour_1
+  m_Name: RegularBoardBarrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4512680365916201348
+--- !u!4 &5268584955782144945
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4512680365916201350}
+  m_GameObject: {fileID: 7123871852565020290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.7119942, y: -1.180706, z: -12.099443}
+  m_LocalPosition: {x: 3.3449402, y: -0.35211277, z: -2.676075}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4512680365916201351
-MonoBehaviour:
+--- !u!65 &7788514299747533267
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4512680365916201350}
+  m_GameObject: {fileID: 7123871852565020290}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b710dff484824db8948a84e02e450c1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _minVelocityForThrow: 0.05
-  _throwModificator: 500
-  _torqueForceRangeMin: 2000
-  _torqueForceRangeMax: 5000
-  _torqueBase: {x: 10000, y: 10000, z: 10000}
-  MaxDistance: 5000
-  IsAbleToGrabDice: 0
-  Grabbed: 0
-  _numberOfLastRegisteredVelocities: 5
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

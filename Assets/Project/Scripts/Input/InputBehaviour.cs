@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum HandAndPointerState
 {
@@ -14,6 +17,12 @@ public enum HandAndPointerState
     
 public class InputBehaviour : MonoBehaviour
 {
+    [SerializeField] private double _minVelocityForThrow;
+    [SerializeField]private float _throwModificator;
+    [SerializeField] private float _torqueForceRangeMin;
+    [SerializeField] private float _torqueForceRangeMax;
+    [SerializeField] private Vector3 _torqueBase;
+    
     private int InputLayer;
     public float MaxDistance = 5000;
     private DiceBehaviour DiceBehaviour => GameMaster.CurrentActiveBoardDiceGameBehaviour.DiceBehaviour;
@@ -29,48 +38,104 @@ public class InputBehaviour : MonoBehaviour
         InputLayer =  LayerMask.GetMask("BoardInput");
         ResetVelocity();
     }
-    
-    private void FixedUpdate()
+
+    private void OnValidate()
     {
-        if (Grabbed)
+        if (_numberOfLastRegisteredVelocities <= 0)
         {
-            RegisterVelocity();
+            Debug.LogError($"_numberOfLastRegisteredVelocities is setup ${_numberOfLastRegisteredVelocities}. " +
+                           $"This value must be greater than 0 to calculate average velocity.");
         }
     }
 
     private void Update()
     {
         StreamInputPosition();
-
+        if (Grabbed)
+        {
+            RegisterVelocity();
+        }
     }
 
-    private float _currentVelocity;
+    [SerializeField] private int _numberOfLastRegisteredVelocities;
+    private readonly LinkedList<float> _lastVelocities = new LinkedList<float>();
     private Vector3 _lastPosition;
+    private Vector3 _currentMoveVector;
+    
     private void RegisterVelocity()
     {
         var currentPosition = Hand.transform.position;
-        _currentVelocity = Vector3.Distance(_lastPosition, currentPosition);
+        var currentVelocity = Vector3.Distance(_lastPosition, currentPosition);
+        _currentMoveVector = currentPosition - _lastPosition;
         _lastPosition = Hand.transform.position;
+
+        AddVelocity(currentVelocity);
     }
 
+    private void AddVelocity(float currentVelocity)
+    {
+        _lastVelocities.AddFirst(currentVelocity);
+        if (_lastVelocities.Count <= _numberOfLastRegisteredVelocities)
+        {
+            return;
+        }
+        
+        _lastVelocities.RemoveLast();
+    }
+    
+    private float GetAverageVelocity()
+    {
+         if (_lastVelocities.Count <= 0)
+        {
+            return 0;
+        }
+        
+        var allVelocitiies = _lastVelocities.Sum();
+        var average = allVelocitiies / _lastVelocities.Count;
+        return average;
+    }
+    
     private void ResetVelocity()
     {
-        _currentVelocity = 0;
+        _lastVelocities.Clear();
         _lastPosition = Hand.transform.position;
     }
     
     private void TryThrow()
     {
-        ResetDice();
-        Debug.Log($"Tried throw with velocity {_currentVelocity}");
-    }
+        var averageVelocity = GetAverageVelocity();
+        Debug.Log($"Tried throw with velocity {averageVelocity}");
+        if (averageVelocity < _minVelocityForThrow)
+        {
+            ResetDice();
+            Debug.Log($"Velocity too slow, reseting.");
+            return;
+        }
 
-    private void ResetDice()
+        Throw(averageVelocity);
+    }
+    
+    private void Throw(float velocity)
+    {
+        DiceBehaviour.transform.SetParent(null);
+        DiceBehaviour.ChangeKinematic(false);
+        
+        var throwForce = _currentMoveVector * velocity * _throwModificator;
+        var torqueXRandom = Random.Range(_torqueForceRangeMin, _torqueForceRangeMax);
+        var torqueYRandom = Random.Range(_torqueForceRangeMin, _torqueForceRangeMax);
+        var torqueZRandom = Random.Range(_torqueForceRangeMin, _torqueForceRangeMax);
+
+        var torqueForce = _torqueBase + new Vector3(torqueXRandom,torqueYRandom,torqueZRandom);
+        DiceBehaviour.Throw(throwForce,torqueForce);
+        
+        ChangePointerAndHandState(HandAndPointerState.Visible);
+    }
+    
+    public void ResetDice()
     {
         DiceBehaviour.transform.SetParent(null);
         DiceBehaviour.transform.position = BoardDiceGame.DiceStartPosition.position;
         DiceBehaviour.ChangeKinematic(false);
-
     }
 
     private void StreamInputPosition()
@@ -85,12 +150,14 @@ public class InputBehaviour : MonoBehaviour
         {
             TryThrow();
             Grabbed = false;
+            return;
         }
 
-        var ableToThrow = Grabbed && isHolding;
-        if (raycastHits == null || raycastHits.Length <= 0)
+        var isAbleToThrow = Grabbed && isHolding;
+        var isPointerAboveBoardInputPlane = raycastHits != null && raycastHits.Length > 0;
+        if (isPointerAboveBoardInputPlane == false)
         {
-            if (ableToThrow)
+            if (isAbleToThrow)
             {
                 TryThrow();
                 Grabbed = false;
@@ -101,7 +168,7 @@ public class InputBehaviour : MonoBehaviour
             return;
         }
 
-        var hit = raycastHits[0];
+        var boardInputPlaneRaycastHit = raycastHits[0];
         if (IsAbleToGrabDice && isHolding == false)
         {
             //Debug.Log($"Able To grab");
@@ -120,7 +187,7 @@ public class InputBehaviour : MonoBehaviour
             ChangePointerAndHandState(HandAndPointerState.Visible);
         }
         
-        UpdateRaycastHit(hit);
+        SetPointerOnRaycastHit(boardInputPlaneRaycastHit);
     }
 
     private void GrabDice()
@@ -161,7 +228,7 @@ public class InputBehaviour : MonoBehaviour
         }
     }
 
-    private void UpdateRaycastHit(RaycastHit hit)
+    private void SetPointerOnRaycastHit(RaycastHit hit)
     {
         var pos = hit.point;
         Pointer.transform.position = pos;
