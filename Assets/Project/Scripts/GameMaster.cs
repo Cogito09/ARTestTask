@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Cinemachine;
 using Project.Scripts;
 using UnityEngine;
 
@@ -10,15 +11,19 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private MainConfig _mainConfig;
     [SerializeField] private Spawner _spawner;
+    [SerializeField] private Camera _mainCamera;
+    public static Camera MainCamera => Instance._mainCamera;
     public static MainConfig MainConfig => _instance._mainConfig;
     public static Spawner Spawner => _instance._spawner;
     private bool _isGameLoaded;
     private bool IsGameLoaded => Instance == null ? false : Instance._isGameLoaded;
 
+
+    public static BoardDiceGameBehaviour CurrentActiveBoardDiceGameBehaviour => Instance._boardDiceGameBehaviour;
+    private BoardDiceGameBehaviour _boardDiceGameBehaviour;
     private BoardDiceGameSave _save;
     private BoardDiceGame _boardDiceGame;
-    private BoardDiceGameBehaviour _boardDiceGameBehaviour;
-    
+
     private void Awake()
     {
         _loadingScreen.gameObject.SetActive(true);
@@ -54,7 +59,6 @@ public class GameMaster : MonoBehaviour
         _boardDiceGame.Initialize();
         
         _boardDiceGameBehaviour = Spawner.Spawn<BoardDiceGameBehaviour>(boardConfig.BoardPrefab);
-        _boardDiceGameBehaviour.Setup(_boardDiceGame);
-        yield return null;
+        yield return _boardDiceGameBehaviour.Setup(_boardDiceGame);
     }
 }

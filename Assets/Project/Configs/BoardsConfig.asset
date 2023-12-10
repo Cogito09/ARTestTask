@@ -18,4 +18,6 @@ MonoBehaviour:
     BoardPrefab: 4
     DicePrefab: 3
     DesktopPrefab: 1
-    PointerPrefab: 2
+    PointerPrefab: 5
+    HandPrefab: 2
+    InputPrefab: 6

@@ -29,3 +29,11 @@ MonoBehaviour:
     DevName: Board
     Object: {fileID: 5308765950607389488, guid: 12b5925ef2d37964898edafa647c757d,
       type: 3}
+  - Id: 5
+    DevName: Pointer
+    Object: {fileID: 7433612938593999301, guid: 647fe58927e23a84d895585000cf7ddb,
+      type: 3}
+  - Id: 6
+    DevName: InputBehaviour_1
+    Object: {fileID: 4512680365916201350, guid: 361d78f377490334ca73bd27c208605f,
+      type: 3}

@@ -1,35 +1,44 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using Sirenix.OdinInspector;
+using UnityEngine;
 
 public class BoardDiceGameBehaviour : MonoBehaviour
 {
-    [SerializeField] private GameObject _desktop;
-    [SerializeField] private DiceBehaviour _diceBehaviour;
-    [SerializeField] private InputBehaviour _hand;
-    
+    [ReadOnly] public GameObject Desktop;
+    [ReadOnly] public DiceBehaviour DiceBehaviour;
+    [ReadOnly] public InputBehaviour Input;
+    [ReadOnly] public HandBehaviour Hand;
+    [ReadOnly] public PointerBehaviour Pointer;
 
-    public void Setup(BoardDiceGame boardDiceGame)
+
+    public IEnumerator Setup(BoardDiceGame boardDiceGame)
     {
         if (boardDiceGame == null)
         {
             Debug.LogError($"BoardDiceGame object is null");
-            return;
+            yield break;
         }
 
         if (boardDiceGame.BoardConfig == null)
         {
             Debug.LogError($"BoardDiceGameConfig is null");
-            return;
+            yield break;
         }
 
-        SpawnObjects(boardDiceGame);
+        yield return SpawnObjects(boardDiceGame);
         InitGame();
     }
     
-    private void SpawnObjects(BoardDiceGame boardDiceGame)
+    private IEnumerator SpawnObjects(BoardDiceGame boardDiceGame)
     {
-        _diceBehaviour = GameMaster.Spawner.Spawn<DiceBehaviour>(boardDiceGame.BoardConfig.DicePrefab);
-        _hand = GameMaster.Spawner.Spawn<InputBehaviour>(boardDiceGame.BoardConfig.PointerPrefab);
-        _desktop = GameMaster.Spawner.Spawn(boardDiceGame.BoardConfig.DesktopPrefab);
+        DiceBehaviour = GameMaster.Spawner.Spawn<DiceBehaviour>(boardDiceGame.BoardConfig.DicePrefab);
+        Input = GameMaster.Spawner.Spawn<InputBehaviour>(boardDiceGame.BoardConfig.InputPrefab);
+        Hand = GameMaster.Spawner.Spawn<HandBehaviour>(boardDiceGame.BoardConfig.HandPrefab);
+        Pointer = GameMaster.Spawner.Spawn<PointerBehaviour>(boardDiceGame.BoardConfig.PointerPrefab);
+        Desktop = GameMaster.Spawner.Spawn(boardDiceGame.BoardConfig.DesktopPrefab);
+
+        Input.Initialize();
+        yield return null;
     }
     
     private void InitGame()

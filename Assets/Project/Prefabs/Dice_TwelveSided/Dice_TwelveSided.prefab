@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5607427104481642596}
   m_Layer: 0
   m_Name: Dice_TwelveSided
-  m_TagString: Untagged
+  m_TagString: Dice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810d5147ff9443ca9472cb3ae82e1af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 5607427104481642596}
 --- !u!33 &5607427104484709480
 MeshFilter:
   m_ObjectHideFlags: 0
