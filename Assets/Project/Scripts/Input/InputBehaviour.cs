@@ -61,7 +61,16 @@ public class InputBehaviour : MonoBehaviour
     
     private void TryThrow()
     {
+        ResetDice();
         Debug.Log($"Tried throw with velocity {_currentVelocity}");
+    }
+
+    private void ResetDice()
+    {
+        DiceBehaviour.transform.SetParent(null);
+        DiceBehaviour.transform.position = BoardDiceGame.DiceStartPosition.position;
+        DiceBehaviour.ChangeKinematic(false);
+
     }
 
     private void StreamInputPosition()
