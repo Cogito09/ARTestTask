@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Cinemachine;
 using Project.Scripts;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GameMaster : MonoBehaviour
@@ -11,8 +14,10 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private MainConfig _mainConfig;
     [SerializeField] private Spawner _spawner;
     [SerializeField] private Camera _mainCamera;
+    [SerializeField] private CinemachineBrain _cinemachineBrain;
     [SerializeField] private RectTransform _canvasRoot;
     
+    public static CinemachineBrain MainCameraBrain => _instance._cinemachineBrain;
     public static Camera MainCamera => Instance._mainCamera;
     public static MainConfig MainConfig => _instance._mainConfig;
     public static Spawner Spawner => _instance._spawner;
@@ -21,7 +26,7 @@ public class GameMaster : MonoBehaviour
     
     public static BoardDiceGameBehaviour CurrentActiveBoardDiceGameBehaviour => Instance._boardDiceGameBehaviour;
     public static BoardDiceGame CurrentBoardDiceGameLogic => Instance._boardDiceGame;
-    
+
     private UIBoardGameBehaviour _boardGameBehaviour;
     private BoardDiceGameBehaviour _boardDiceGameBehaviour;
     private BoardDiceGameSave _save;
@@ -43,6 +48,7 @@ public class GameMaster : MonoBehaviour
     {
         yield return LoadSave();
         yield return LoadBoardGame();
+
         _isGameLoaded = true;
     }
 
@@ -61,34 +67,34 @@ public class GameMaster : MonoBehaviour
         _boardGameBehaviour = uiBoardGame;
         
         _boardDiceGame = new BoardDiceGame(boardConfig, _save);
-        _boardDiceGame.Initialize();
-        
+
         _boardDiceGameBehaviour = Spawner.Spawn<BoardDiceGameBehaviour>(boardConfig.BoardPrefab);
         yield return _boardDiceGameBehaviour.Setup(_boardDiceGame);
     }
 
-    private void Unload()
+    [Button]
+    public void Unload()
     {
-        WriteSaveToPlayerPrefs(_save);
-        
-        _boardDiceGame.Dispose();
+        _boardDiceGame?.Dispose();
         _boardDiceGame = null;
+
+        if (_boardGameBehaviour != null)
+        {
+            _boardGameBehaviour.Unload();
+            Destroy(_boardGameBehaviour);
+            _boardGameBehaviour = null;
+        }
+
         
         _boardDiceGameBehaviour.Unload();
         Destroy(_boardDiceGameBehaviour);
         _boardDiceGameBehaviour = null;
     }
-
-    private void WriteSaveToPlayerPrefs(BoardDiceGameSave save)
-    {
-        //only works in editor
-        PlayerPrefs.SetString("Save",JsonUtility.ToJson(save));
-        PlayerPrefs.Save();
-    }
+    
 
     private BoardDiceGameSave ReadSaveFromPlayerPrefs()
     {
-        var save = JsonUtility.FromJson<BoardDiceGameSave>(PlayerPrefs.GetString("Save",JsonUtility.ToJson(new BoardDiceGameSave())));
+        var save = JsonUtility.FromJson<BoardDiceGameSave>(PlayerPrefs.GetString("Save",String.Empty));
         return save;
     }
 }

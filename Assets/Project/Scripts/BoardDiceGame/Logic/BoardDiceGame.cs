@@ -36,9 +36,4 @@ public class BoardDiceGame : IDisposable
         BoardConfig = null;
         _save = null;
     }
-
-    public void Initialize()
-    {
-
-    }
 }

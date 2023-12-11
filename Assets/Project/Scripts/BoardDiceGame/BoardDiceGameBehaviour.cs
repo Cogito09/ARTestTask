@@ -14,13 +14,14 @@ public enum DiceGameState
 
 public class BoardDiceGameBehaviour : MonoBehaviour
 {
-    [FormerlySerializedAs("Desktop")] [ReadOnly] public BoardDesktopBehaviour boardDesktop;
+    [FormerlySerializedAs("boardDesktop")] [FormerlySerializedAs("Desktop")] [ReadOnly] public BoardDesktopBehaviour BoardDesktop;
     [ReadOnly] public DiceBehaviour DiceBehaviour;
     [ReadOnly] public InputBehaviour Input;
     [ReadOnly] public HandBehaviour Hand;
     [ReadOnly] public PointerBehaviour Pointer;
-    
-    public Transform DiceStartPosition => boardDesktop.DiceResetPosition;
+    [ReadOnly] public GameObject CamerasSetup;
+
+    public Transform DiceStartPosition => BoardDesktop.DiceResetPosition;
     //private BoardBarrier BoardBarrier => boardDesktop.BoardBarrier;
     //private BoardDiceTriggerAreaBehaviour BoardDiceTriggerAreaBehaviour => boardDesktop.boardDiceTriggerAreaBehaviour;
     
@@ -61,16 +62,18 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         Input = GameMaster.Spawner.Spawn<InputBehaviour>(boardDiceGame.BoardConfig.InputPrefab);
         Hand = GameMaster.Spawner.Spawn<HandBehaviour>(boardDiceGame.BoardConfig.HandPrefab);
         Pointer = GameMaster.Spawner.Spawn<PointerBehaviour>(boardDiceGame.BoardConfig.PointerPrefab);
-        boardDesktop = GameMaster.Spawner.Spawn<BoardDesktopBehaviour>(boardDiceGame.BoardConfig.DesktopPrefab);
+        BoardDesktop = GameMaster.Spawner.Spawn<BoardDesktopBehaviour>(boardDiceGame.BoardConfig.DesktopPrefab);
+        CamerasSetup = GameMaster.Spawner.Spawn(boardDiceGame.BoardConfig.CamerasSetupPrefab);
+            
         SpawnDice(boardDiceGame);
         yield return null;
     }
-    
+
+
     private void Initialize()
     {
         Input.Initialize();
         
-        //BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground += OnDiceInsidePlayground;
         DiceBehaviour.OnDiceResultCaptured += OnDiceResultCaptured;
         DiceBehaviour.OnDiceFailedToCaptureResult += OnDiceFailedToCaptureResult;
 
@@ -81,7 +84,6 @@ public class BoardDiceGameBehaviour : MonoBehaviour
     {
         State = DiceGameState.Unknown;
         
-        //BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground -= OnDiceInsidePlayground;
         DiceBehaviour.OnDiceResultCaptured -= OnDiceResultCaptured;
         DiceBehaviour.OnDiceFailedToCaptureResult -= OnDiceFailedToCaptureResult;
 
@@ -89,7 +91,8 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         Destroy(Input.gameObject);
         Destroy(Hand.gameObject);
         Destroy(Pointer.gameObject);
-        Destroy(boardDesktop.gameObject);
+        Destroy(BoardDesktop.gameObject);
+        Destroy(CamerasSetup.gameObject);
     }
 
     public void RandomRoll()
@@ -108,7 +111,6 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         _starDiceRollTimestmap = Time.time;
 
         DiceBehaviour.StartListenForResult();
-        //BoardBarrier.ChangeBarrierState(true);
     }
     
     private void OnDiceFailedToCaptureResult()

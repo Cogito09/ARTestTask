@@ -22,3 +22,4 @@ MonoBehaviour:
     HandPrefab: 2
     InputPrefab: 6
     UIBoardGamePrefab: 7
+    CamerasSetupPrefab: 8

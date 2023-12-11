@@ -37,3 +37,6 @@ MonoBehaviour:
     DevName: UIBoard
     Object: {fileID: 7004966225228208146, guid: 5f3f448ae46cf82448ca28a5b6435788,
       type: 3}
+  - Id: 8
+    DevName: CamerasSetup
+    Object: {fileID: 739379829851534741, guid: 223a840913600bf41b36bf51a8320a03, type: 3}

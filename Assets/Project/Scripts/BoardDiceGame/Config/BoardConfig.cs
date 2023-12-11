@@ -14,4 +14,5 @@ public class BoardConfig
     [Prefab] public int HandPrefab;
     [Prefab] public int InputPrefab;
     [Prefab] public int UIBoardGamePrefab;
+    [Prefab] public int CamerasSetupPrefab;
 }

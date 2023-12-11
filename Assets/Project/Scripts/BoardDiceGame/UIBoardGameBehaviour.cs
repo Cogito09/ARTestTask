@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using TMPro;
+using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class UIBoardGameBehaviour : MonoBehaviour
 {
-    [FormerlySerializedAs("_totalResult")] [SerializeField] private TextMeshProUGUI _totalScore;
-    [FormerlySerializedAs("_result")] [SerializeField] private TextMeshProUGUI _lastResult;
+    [SerializeField] private TextMeshProUGUI _totalScore;
+    [SerializeField] private TextMeshProUGUI _lastResult;
+    [SerializeField] private MMUIShaker _totalScoreShaker; 
+    [SerializeField] private MMUIShaker _lastResultShaker;
+    [SerializeField] private MMUIShaker _buttonShaker;
+    [SerializeField] private float _udpateShakeDuration = 0.4f;
+    [SerializeField] private float _buttonClickShakeDuration = 0.2f;
 
     private BoardDiceGame BoardDiceGame => GameMaster.CurrentBoardDiceGameLogic;
     private IEnumerator Start()
@@ -29,8 +34,16 @@ public class UIBoardGameBehaviour : MonoBehaviour
         _lastResult.text = $"Result: {lastResult}";
         var totalScore = BoardDiceGame?.TotalScore.ToString() ?? "0";;
         _totalScore.text = $"Total: {totalScore}";
+
+        Shake();
     }
 
+    private void Shake()
+    {
+        StartCoroutine(_totalScoreShaker.Shake(_udpateShakeDuration));
+        StartCoroutine(_lastResultShaker.Shake(_udpateShakeDuration));
+    }
+    
     private void OnRoll()
     {
         _lastResult.text = "?";
@@ -38,6 +51,16 @@ public class UIBoardGameBehaviour : MonoBehaviour
 
     public void OnClickRoll()
     {
+        if (GameMaster.CurrentActiveBoardDiceGameBehaviour.State != DiceGameState.PlayerInput)
+        {
+            return;
+        }
+        
         GameMaster.CurrentActiveBoardDiceGameBehaviour.RandomRoll();
+        StartCoroutine(_buttonShaker.Shake(_buttonClickShakeDuration));
+    }
+
+    public void Unload()
+    {
     }
 }
