@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -34,7 +32,6 @@ public class InputBehaviour : MonoBehaviour
     private Vector3 _lastPosition;
     private Vector3 _currentMoveVector;
 
-    
     private int InputLayer;
     private DiceBehaviour DiceBehaviour => GameMaster.CurrentActiveBoardDiceGameBehaviour.DiceBehaviour;
     private HandBehaviour Hand  => GameMaster.CurrentActiveBoardDiceGameBehaviour.Hand;
@@ -199,6 +196,10 @@ public class InputBehaviour : MonoBehaviour
             ResetVelocity();
             ChangePointerAndHandState(HandAndPointerState.Grab);
         }
+        else if (Grabbed && isHolding)
+        {
+            // GrabMode , just Updating Pointer position
+        }
         else
         {
             ChangePointerAndHandState(HandAndPointerState.Visible);
@@ -247,7 +248,7 @@ public class InputBehaviour : MonoBehaviour
                 Hand.ChangeVisibility(true);
                 Pointer.ChangeVisibility(true);
                 
-                Hand.GrabbedVisualState(true);
+                Hand.GrabbedVisualState();
                 Pointer.GrabbedVisualState();
                 break;
             case HandAndPointerState.Throw:

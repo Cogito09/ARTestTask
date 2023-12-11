@@ -46,7 +46,7 @@ MonoBehaviour:
   _maxVelocityForRandomThrow: 1
   _minVelocityForRandomThrow: 3
   _minVelocityForThrow: 0.3
-  _throwModificator: 6.5
+  _throwModificator: 8
   _torqueForceRangeMin: -3000
   _torqueForceRangeMax: 3000
   _torqueBase: {x: 10000, y: 10000, z: 10000}

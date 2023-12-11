@@ -35,7 +35,7 @@ public class HandBehaviour : MonoBehaviour
         _throwLook.ChangeActive(false);
     }
 
-    public void GrabbedVisualState(bool b)
+    public void GrabbedVisualState()
     {
         _freeHandLook.ChangeActive(false);
         _grabbedHandLook.ChangeActive(true);

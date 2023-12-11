@@ -79,7 +79,7 @@ MonoBehaviour:
   _maxPositionsEqualityDistance: 0.01
   _maxRotationEqualityEulerAngleDifference: 0.01
   _highlightEffect: {fileID: 457008001}
-  _faceToEdit: {fileID: 0}
+  _faceToEdit: {fileID: 3823582645905201221}
   FaceRotation: 286
   FacePositionShift: 0.023
   FaceSize: 0.96
@@ -1919,10 +1919,40 @@ PrefabInstance:
       propertyPath: m_renderer
       value: 
       objectReference: {fileID: 3823582646028988788}
+    - target: {fileID: 3823582647338628140, guid: fb82eba44cbe8bb438fd4590ccc3f3e0,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823582647338628140, guid: fb82eba44cbe8bb438fd4590ccc3f3e0,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823582647045930124, guid: fb82eba44cbe8bb438fd4590ccc3f3e0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823582647045930126, guid: fb82eba44cbe8bb438fd4590ccc3f3e0,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 8427682718173444756, guid: fb82eba44cbe8bb438fd4590ccc3f3e0,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823582647045930127, guid: fb82eba44cbe8bb438fd4590ccc3f3e0,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823582647045930127, guid: fb82eba44cbe8bb438fd4590ccc3f3e0,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3823582647338628142, guid: fb82eba44cbe8bb438fd4590ccc3f3e0,
         type: 3}

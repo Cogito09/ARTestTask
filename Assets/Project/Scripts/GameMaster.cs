@@ -94,7 +94,7 @@ public class GameMaster : MonoBehaviour
 
     private BoardDiceGameSave ReadSaveFromPlayerPrefs()
     {
-        var save = JsonUtility.FromJson<BoardDiceGameSave>(PlayerPrefs.GetString("Save",String.Empty));
+        var save = JsonUtility.FromJson<BoardDiceGameSave>(PlayerPrefs.GetString("Save",JsonUtility.ToJson(new BoardDiceGameSave())));
         return save;
     }
 }

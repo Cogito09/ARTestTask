@@ -51,22 +51,25 @@ public class PointerBehaviour : MonoBehaviour
 
     public void AbleToGrabVisualState()
     {
-        _freeHandLook.gameObject.SetActive(false);
-        _grabbedHandLook.gameObject.SetActive(false);
-        _ableToGrabLook.gameObject.SetActive(true);
+        _freeHandLook.ChangeActive(false);
+        _grabbedHandLook.ChangeActive(false);
+        
+        _ableToGrabLook.ChangeActive(true);
     }
 
     public void FreeVisualState()
     {
-        _freeHandLook.gameObject.SetActive(true);
-        _grabbedHandLook.gameObject.SetActive(false);
-        _ableToGrabLook.gameObject.SetActive(false);
+        _grabbedHandLook.ChangeActive(false);
+        _ableToGrabLook.ChangeActive(false);
+        
+        _freeHandLook.ChangeActive(true);
     }
     
     public void GrabbedVisualState()
     {
-        _freeHandLook.gameObject.SetActive(false);
-        _grabbedHandLook.gameObject.SetActive(true);
-        _ableToGrabLook.gameObject.SetActive(false);
+        _freeHandLook.ChangeActive(false);
+        _ableToGrabLook.ChangeActive(false);
+        
+        _grabbedHandLook.ChangeActive(true);
     }
 }
