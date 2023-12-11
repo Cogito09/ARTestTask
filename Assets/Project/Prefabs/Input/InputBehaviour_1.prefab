@@ -43,8 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b710dff484824db8948a84e02e450c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxVelocityForRandomThrow: 1
-  _minVelocityForRandomThrow: 3
+  IsAbleToGrabDice: 0
+  Grabbed: 0
+  _maxVelocityForRandomThrow: 3
+  _minVelocityForRandomThrow: 1
   _minVelocityForThrow: 0.3
   _throwModificator: 8
   _torqueForceRangeMin: -3000
@@ -52,6 +54,4 @@ MonoBehaviour:
   _torqueBase: {x: 10000, y: 10000, z: 10000}
   _numberOfLastRegisteredVelocities: 4
   MaxRaycastDistance: 5000
-  IsAbleToGrabDice: 0
-  Grabbed: 0
   _downForce: -0.2
