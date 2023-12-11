@@ -100,10 +100,9 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         }
         
         Input.RandomThrow();
-        OnDiceInsidePlayground();
     }
 
-    public void OnDiceInsidePlayground()
+    public void OnDiceRolledForScore()
     {
         State = DiceGameState.DiceRoll;
         _starDiceRollTimestmap = Time.time;
@@ -141,7 +140,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
                 {
                     return;
                 }
-
+                
                 OnDiceFailedToCaptureResult();
                 break;
             }

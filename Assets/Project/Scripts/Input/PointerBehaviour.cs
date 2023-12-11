@@ -8,7 +8,7 @@ public class PointerBehaviour : MonoBehaviour
     [SerializeField] private GameObject _freeHandLook;
     [SerializeField] private GameObject _grabbedHandLook;
     
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Dice") == false)
         {
@@ -18,11 +18,21 @@ public class PointerBehaviour : MonoBehaviour
         GameMaster.CurrentActiveBoardDiceGameBehaviour.Input.IsAbleToGrabDice = true;
         //Debug.Log($"IsAbleToGrabDice is true");
     }
-    
-    private void LateUpdate()
+
+    private void OnTriggerExit(Collider other)
     {
+        if (other.gameObject.CompareTag("Dice") == false)
+        {
+            return;
+        }
+
         GameMaster.CurrentActiveBoardDiceGameBehaviour.Input.IsAbleToGrabDice = false;
+        //Debug.Log($"IsAbleToGrabDice is true");
     }
+    // private void LateUpdate()
+    // {
+    //     GameMaster.CurrentActiveBoardDiceGameBehaviour.Input.IsAbleToGrabDice = false;
+    // }
 
     private void OnDisable()
     {
@@ -31,6 +41,11 @@ public class PointerBehaviour : MonoBehaviour
 
     public void ChangeVisibility(bool b)
     {
+        if (b == false)
+        {
+            GameMaster.CurrentActiveBoardDiceGameBehaviour.Input.IsAbleToGrabDice = false;
+        }
+        
         _holder.gameObject.SetActive(b);
     }
 

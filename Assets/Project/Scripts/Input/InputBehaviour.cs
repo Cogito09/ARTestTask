@@ -146,7 +146,8 @@ public class InputBehaviour : MonoBehaviour
         DiceBehaviour.Throw(throwForce,torqueForce);
         ChangePointerAndHandState(HandAndPointerState.Visible);
         
-        BoardDiceGame.OnDiceInsidePlayground();
+        Debug.Log($"Velocity too slow, reseting.");
+        BoardDiceGame.OnDiceRolledForScore();
     }
     
     public void ResetDice()
@@ -171,29 +172,26 @@ public class InputBehaviour : MonoBehaviour
             Grabbed = false;
             return;
         }
-
-        var isAbleToThrow = Grabbed && isHolding;
+        
         var isPointerAboveBoardInputPlane = raycastHits != null && raycastHits.Length > 0;
         if (isPointerAboveBoardInputPlane == false)
         {
-            if (isAbleToThrow)
+            if (Grabbed)
             {
-                TryThrow();
-                Grabbed = false;
-                return;
+                ResetDice();
             }
-            
+
             ChangePointerAndHandState(HandAndPointerState.NonVisible);
             return;
         }
 
+        var isAbleToInteractWithDice = BoardDiceGame.State == DiceGameState.PlayerInput;
         var boardInputPlaneRaycastHit = raycastHits[0];
         if (IsAbleToGrabDice && isHolding == false)
         {
-            //Debug.Log($"Able To grab");
             ChangePointerAndHandState(HandAndPointerState.AbleToGrab);
         }
-        else if (IsAbleToGrabDice && isHolding)
+        else if (IsAbleToGrabDice && isHolding && isAbleToInteractWithDice)
         {
             //Debug.Log($"Grabbed");
             Grabbed = true;
@@ -207,6 +205,11 @@ public class InputBehaviour : MonoBehaviour
         }
         
         SetPointerOnRaycastHit(boardInputPlaneRaycastHit);
+    }
+
+    private void ReleaseDice()
+    {
+        ResetDice();
     }
 
     private void GrabDice()
