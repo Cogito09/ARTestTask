@@ -40,7 +40,6 @@ public class InputBehaviour : MonoBehaviour
     private PointerBehaviour Pointer => GameMaster.CurrentActiveBoardDiceGameBehaviour.Pointer;
     private BoardDiceGameBehaviour BoardDiceGame => GameMaster.CurrentActiveBoardDiceGameBehaviour;
     
-    
     public void Initialize()
     {
         _inputLayer =  LayerMask.GetMask("BoardInput");
@@ -58,14 +57,9 @@ public class InputBehaviour : MonoBehaviour
 
     private void Update()
     {
-        StreamInputPosition();
-        if (Grabbed)
-        {
-            RegisterVelocity();
-        }
+        UpdateInput();
     }
     
-
     private void RegisterVelocity()
     {
         var currentPosition = Hand.transform.position;
@@ -89,7 +83,7 @@ public class InputBehaviour : MonoBehaviour
     
     private float GetAverageVelocity()
     {
-         if (_lastVelocities.Count <= 0)
+        if (_lastVelocities.Count <= 0)
         {
             return 0;
         }
@@ -104,7 +98,6 @@ public class InputBehaviour : MonoBehaviour
         _lastVelocities.Clear();
         _lastPosition = Hand.transform.position;
     }
-    
     
     private void TryThrow()
     {
@@ -159,7 +152,7 @@ public class InputBehaviour : MonoBehaviour
         DiceBehaviour.ChangeKinematic(false);
     }
 
-    private void StreamInputPosition()
+    private void UpdateInput()
     {
         var isHolding = Input.GetMouseButton(0);
         var isReleased = Input.GetMouseButtonUp(0);
@@ -180,6 +173,8 @@ public class InputBehaviour : MonoBehaviour
             if (Grabbed)
             {
                 ResetDice();
+                ResetVelocity();
+                Grabbed = false;
             }
 
             ChangePointerAndHandState(HandAndPointerState.NonVisible);
@@ -188,6 +183,7 @@ public class InputBehaviour : MonoBehaviour
 
         var isAbleToInteractWithDice = BoardDiceGame.State == DiceGameState.PlayerInput;
         var boardInputPlaneRaycastHit = raycastHits[0];
+        
         if (IsAbleToGrabDice && isHolding == false)
         {
             ChangePointerAndHandState(HandAndPointerState.AbleToGrab);
@@ -201,7 +197,7 @@ public class InputBehaviour : MonoBehaviour
         }
         else if (Grabbed && isHolding)
         {
-            // GrabMode , just Updating Pointer position
+            RegisterVelocity();
         }
         else
         {
