@@ -4,7 +4,10 @@ using UnityEngine;
 public class PointerBehaviour : MonoBehaviour
 {
     [SerializeField] private GameObject _holder;
-    //[SerializeField] private GameObject _ableToGrabHolder;
+    [SerializeField] private GameObject _ableToGrabLook;
+    [SerializeField] private GameObject _freeHandLook;
+    [SerializeField] private GameObject _grabbedHandLook;
+    
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Dice") == false)
@@ -13,7 +16,7 @@ public class PointerBehaviour : MonoBehaviour
         }
 
         GameMaster.CurrentActiveBoardDiceGameBehaviour.Input.IsAbleToGrabDice = true;
-        Debug.Log($"IsAbleToGrabDice is true");
+        //Debug.Log($"IsAbleToGrabDice is true");
     }
     
     private void LateUpdate()
@@ -31,8 +34,17 @@ public class PointerBehaviour : MonoBehaviour
         _holder.gameObject.SetActive(b);
     }
 
-    public void AbleToGrab()
+    public void AbleToGrabVisualState()
     {
+        _freeHandLook.gameObject.SetActive(false);
+        _grabbedHandLook.gameObject.SetActive(false);
+        _ableToGrabLook.gameObject.SetActive(true);
+    }
 
+    public void FreeVisualState()
+    {
+        _freeHandLook.gameObject.SetActive(true);
+        _grabbedHandLook.gameObject.SetActive(false);
+        _ableToGrabLook.gameObject.SetActive(false);
     }
 }

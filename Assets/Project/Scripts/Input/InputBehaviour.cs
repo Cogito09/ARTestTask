@@ -216,19 +216,25 @@ public class InputBehaviour : MonoBehaviour
             case HandAndPointerState.Visible:
                 Hand.ChangeVisibility(true);
                 Pointer.ChangeVisibility(true);
+
+                Hand.FreeVisualState();
+                Pointer.FreeVisualState();
                 break;
             case HandAndPointerState.AbleToGrab:
                 Hand.ChangeVisibility(true);
-                Hand.AbleToGrab();
                 Pointer.ChangeVisibility(true);
-                Pointer.AbleToGrab();
+                
+                Hand.AbleToGrabVisualState();
+                Pointer.AbleToGrabVisualState();
                 break;
             case HandAndPointerState.Grab:
-                Hand.ChangeGrabbedState(true);
+                Hand.ChangeVisibility(true);
                 Pointer.ChangeVisibility(false);
+                
+                Hand.GrabbedVisualState(true);
                 break;
             case HandAndPointerState.Throw:
-                Hand.Throw();
+                Hand.ThrowVisualState();
                 Pointer.ChangeVisibility(false);
                 break;
         }

@@ -14,6 +14,7 @@ public class UIBoardGameBehaviour : MonoBehaviour
         yield return new WaitUntil(() => GameMaster.IsGameLoaded);
         EventManager.OnRoll += OnRoll;
         EventManager.OnScoreUpdated += OnScoreUpdated;
+        OnScoreUpdated();
     }
     
     private void OnDestroy()

@@ -13,6 +13,8 @@ public class DiceFaceBehaviour : MonoBehaviour
     [SerializeField] private GameObject _gameplayViewHolder;
 
     [ReadOnly]public DiceFaceConfig DiceConfig;
+    public int Score => DiceConfig.Score;
+
     public void Setup(DiceFaceConfig diceFaceConfig)
     {
         DiceConfig = diceFaceConfig;

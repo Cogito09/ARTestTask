@@ -73,7 +73,6 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground += OnDiceInsidePlayground;
         DiceBehaviour.OnDiceResultCaptured += OnDiceResultCaptured;
         DiceBehaviour.OnDiceFailedToCaptureResult += OnDiceFailedToCaptureResult;
-        DiceBehaviour.OnDiceUnableToGetClearResult += OnDiceUnableToGetClearResult;
 
         ResetDice();
     }
@@ -85,8 +84,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground -= OnDiceInsidePlayground;
         DiceBehaviour.OnDiceResultCaptured -= OnDiceResultCaptured;
         DiceBehaviour.OnDiceFailedToCaptureResult -= OnDiceFailedToCaptureResult;
-        DiceBehaviour.OnDiceUnableToGetClearResult -= OnDiceUnableToGetClearResult;
-        
+
         Destroy(DiceBehaviour.gameObject);
         Destroy(Input.gameObject);
         Destroy(Hand.gameObject);
@@ -94,18 +92,14 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         Destroy(boardDesktop.gameObject);
     }
 
-    private void OnDiceUnableToGetClearResult()
-    {
-        DiceBehaviour.StopListenForResult();
-
-        RandomRoll();
-
-    }
-
     public void RandomRoll()
     {
-        Input.RandomThrow();
+        if (State != DiceGameState.PlayerInput)
+        {
+            return;
+        }
         
+        Input.RandomThrow();
         OnDiceInsidePlayground();
     }
 
@@ -124,12 +118,13 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         ResetDice();
     }
 
-    private void OnDiceResultCaptured(int obj)
+    private void OnDiceResultCaptured(int score)
     {
         _diceResultCapturedTimestamp = Time.time;
         DiceBehaviour.StopListenForResult();
         DiceBehaviour.HighlightResult(_pauseDurationAfterResultAnnounced);
-
+        GameMaster.CurrentBoardDiceGameLogic.AddScore(score); 
+        
         State = DiceGameState.Result;
     }
     

@@ -19,7 +19,6 @@ public class DiceBehaviour : MonoBehaviour
     [SerializeField] private Rigidbody _rigidbody;
     public Action<int> OnDiceResultCaptured;
     public Action OnDiceFailedToCaptureResult;
-    public Action OnDiceUnableToGetClearResult;
     private bool _isListeningForResult;
 
     [ReadOnly][SerializeField] private int _motionlessCounter;
@@ -73,6 +72,30 @@ public class DiceBehaviour : MonoBehaviour
         }
     }
     
+    private void TryProceedResult()
+    {
+        var highestPointingFacePosition = 0f;
+        DiceFaceBehaviour highestPointingFace = null;
+        for (var i = 0; i < _faces.Count; i++)
+        {
+            if (_faces[i].transform.position.y < highestPointingFacePosition)
+            {
+                continue;
+            }
+
+            highestPointingFacePosition = _faces[i].transform.position.y;
+            highestPointingFace = _faces[i];
+        }
+
+        if (highestPointingFace == null)
+        {
+            OnDiceFailedToCaptureResult?.Invoke();
+            return;
+        }
+        
+        OnDiceResultCaptured?.Invoke(highestPointingFace.Score);
+    }
+    
     public void ChangeKinematic(bool b)
     {
         _rigidbody.isKinematic = b;
@@ -100,19 +123,15 @@ public class DiceBehaviour : MonoBehaviour
     {
         _motionlessCounter = 0;
     }
-    
+#if UNITY_EDITOR
     private void Update()
     {
-#if UNITY_EDITOR
         if (Application.isPlaying == false)
         {
             RegisterEditorHotkey();
         }
-#endif
-
-        
     }
-    
+#endif  
     private void FixedUpdate()
     {
         if (_isListeningForResult == false)
@@ -134,11 +153,7 @@ public class DiceBehaviour : MonoBehaviour
         TryProceedResult();
     }
 
-    private void TryProceedResult()
-    {
-        
-    }
-    
+
     private void WatchMotion()
     {
         var areRotationsAlmostEqual = AreVectorsAlmostEqual(_rigidbody.angularVelocity,Vector3.zero);
@@ -185,12 +200,9 @@ public class DiceBehaviour : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-
-
     [FormerlySerializedAs("_faceEdited")]
     [FormerlySerializedAs("_faceToPlacePosition")]
     [PropertyOrder(3)][InfoBox("4. Reference Dice_Face under FaceToEdit that you want to place on Dice")]
-   
     [SerializeField] private DiceFaceBehaviour _faceToEdit;
     
     [PropertyOrder(4)]
@@ -211,6 +223,7 @@ public class DiceBehaviour : MonoBehaviour
     [PropertyOrder(10)]
     public float FaceMaxSizeRange = 5;
 
+    private bool _wasRegistered = false;
     private void OnValidate()
     {
         _wasRegistered = false;
@@ -232,7 +245,6 @@ public class DiceBehaviour : MonoBehaviour
         }
     }
     
-    private bool _wasRegistered = false;
     public void RegisterEditorHotkey()
     {
         if (_wasRegistered)
@@ -241,11 +253,11 @@ public class DiceBehaviour : MonoBehaviour
         }
 
         _wasRegistered = true;
-        SceneView.onSceneGUIDelegate -= ONSceneGUIDelegate;
-        SceneView.onSceneGUIDelegate += ONSceneGUIDelegate;
+        SceneView.onSceneGUIDelegate -= OnSceneGUIDelegate;
+        SceneView.onSceneGUIDelegate += OnSceneGUIDelegate;
     }
 
-    private void ONSceneGUIDelegate(SceneView sceneview)
+    private void OnSceneGUIDelegate(SceneView sceneview)
     {
         var e = Event.current;
         if (e == null)
