@@ -154,6 +154,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UICanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1263950557882597609, guid: 74afb5d037d1d8341b289a18a86fb13c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1263950557678441077, guid: 74afb5d037d1d8341b289a18a86fb13c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -503,7 +508,7 @@ PrefabInstance:
     - target: {fileID: 4294533738163049095, guid: 0f8cdeec569a03e49980928b618e6d2c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.9
+      value: 0.89999986
       objectReference: {fileID: 0}
     - target: {fileID: 4294533738163049095, guid: 0f8cdeec569a03e49980928b618e6d2c,
         type: 3}

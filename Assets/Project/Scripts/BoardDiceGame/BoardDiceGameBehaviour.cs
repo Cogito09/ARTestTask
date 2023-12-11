@@ -26,8 +26,8 @@ public class BoardDiceGameBehaviour : MonoBehaviour
     //private BoardDiceTriggerAreaBehaviour BoardDiceTriggerAreaBehaviour => boardDesktop.boardDiceTriggerAreaBehaviour;
     
     [ReadOnly] public DiceGameState State;
-    [SerializeField] private double _rollTimeLimit;
-    [SerializeField] private float _pauseDurationAfterResultAnnounced;
+    private double _rollTimeLimit;
+    private float _pauseDurationAfterResultAnnounced;
     private float _starDiceRollTimestmap;
     private float _diceResultCapturedTimestamp;
     
@@ -46,7 +46,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         }
         
         yield return SpawnObjects(boardDiceGame);
-        Initialize();
+        Initialize(boardDiceGame);
     }
 
     private void SpawnDice(BoardDiceGame boardDiceGame)
@@ -70,8 +70,17 @@ public class BoardDiceGameBehaviour : MonoBehaviour
     }
 
 
-    private void Initialize()
+    private void Initialize(BoardDiceGame boardDiceGame)
     {
+
+        _rollTimeLimit = boardDiceGame.BoardConfig.RollTimeLimit;
+        if (_rollTimeLimit < 1)
+        {
+            Debug.LogError($"Please check rolltimelimit , {_rollTimeLimit} seconds is too small number");
+        }
+        
+        _pauseDurationAfterResultAnnounced = boardDiceGame.BoardConfig.PauseDuration;
+        
         Input.Initialize();
         
         DiceBehaviour.OnDiceResultCaptured += OnDiceResultCaptured;

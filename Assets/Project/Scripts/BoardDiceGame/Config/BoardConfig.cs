@@ -15,4 +15,6 @@ public class BoardConfig
     [Prefab] public int InputPrefab;
     [Prefab] public int UIBoardGamePrefab;
     [Prefab] public int CamerasSetupPrefab;
+    public float RollTimeLimit = 6f;
+    public float PauseDuration = 0.8f;
 }
