@@ -4,4 +4,5 @@
 public class GameplayConfig : ScriptableObject
 {
     [Board] public int BoardToBePlayed;
+    [Prefab] public int PoofEffetPrefab;
 }

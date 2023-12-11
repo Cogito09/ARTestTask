@@ -2,8 +2,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Project.Scripts
-{
+
     [CreateAssetMenu(fileName = "MainConfig", menuName = "Configs/MainConfig")]
     public class MainConfig : ScriptableObject
     {
@@ -34,4 +33,3 @@ namespace Project.Scripts
         }
 #endif
     }
-}

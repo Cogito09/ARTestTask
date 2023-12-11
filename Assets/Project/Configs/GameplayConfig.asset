@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: GameplayConfig
   m_EditorClassIdentifier: 
   BoardToBePlayed: 1
+  PoofEffetPrefab: 9

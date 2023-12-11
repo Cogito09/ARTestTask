@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Project.Scripts;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -149,6 +150,8 @@ public class InputBehaviour : MonoBehaviour
     
     public void ResetDice()
     {
+        GameMaster.Spawner.SpawnAtPosition(MainConfig.GameplayConfig.PoofEffetPrefab,  DiceBehaviour.transform.position);
+        GameMaster.Spawner.SpawnAtPosition(MainConfig.GameplayConfig.PoofEffetPrefab,  BoardDiceGame.DiceStartPosition.position);
         DiceBehaviour.transform.SetParent(null);
         DiceBehaviour.transform.position = BoardDiceGame.DiceStartPosition.position;
         DiceBehaviour.ResetVelocities();
@@ -222,6 +225,7 @@ public class InputBehaviour : MonoBehaviour
 
     private void ChangePointerAndHandState(HandAndPointerState state)
     {
+        Debug.Log($"state id {state}");
         switch (state)
         {
             case HandAndPointerState.Unknown:
@@ -229,6 +233,7 @@ public class InputBehaviour : MonoBehaviour
             case HandAndPointerState.NonVisible:
                 Hand.ChangeVisibility(false);
                 Pointer.ChangeVisibility(false);
+
                 break;
             case HandAndPointerState.Visible:
                 Hand.ChangeVisibility(true);

@@ -13,9 +13,19 @@ public class HandBehaviour : MonoBehaviour
     {
         FreeVisualState();
     }
-    
+
+    private bool _visibilityState;
     public void ChangeVisibility(bool b)
     {
+        if (_visibilityState == b)
+        {
+            return;
+        }
+ 
+        _visibilityState = b;
+        Debug.Log($"Hand visibility Changed to {b}, launching puff");
+        GameMaster.Spawner.SpawnAtPosition(MainConfig.GameplayConfig.PoofEffetPrefab,  transform.position);
+
         _holder.ChangeActive(b);
     }
 

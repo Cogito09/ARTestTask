@@ -3,19 +3,19 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public T Spawn<T>(int boardConfigDicePrefab,Transform parent = null) where T : MonoBehaviour
+    public T Spawn<T>(int prefabId,Transform parent = null) where T : MonoBehaviour
     {
-        var prefab = MainConfig.Prefabs.GetPrefab(boardConfigDicePrefab);
+        var prefab = MainConfig.Prefabs.GetPrefab(prefabId);
         if (prefab?.Object == null)
         {
-            Debug.LogError($"prefab of id{boardConfigDicePrefab} is null.");
+            Debug.LogError($"prefab of id{prefabId} is null.");
             return null;
         }
         
         var spawnedObject = Instantiate(prefab.Object, parent);
         if (spawnedObject == null)
         {
-            Debug.LogError($"Somehow spawned prefab of id{boardConfigDicePrefab} is null.");
+            Debug.LogError($"Somehow spawned prefab of id{prefabId} is null.");
             return null;
         }
 
@@ -54,23 +54,32 @@ public class Spawner : MonoBehaviour
         return script;
     }
     
-    public GameObject Spawn(int boardConfigDicePrefab,Transform parent = null)
+    public GameObject Spawn(int prefabId,Transform parent = null)
     {
-        var prefab = MainConfig.Prefabs.GetPrefab(boardConfigDicePrefab);
+        var prefab = MainConfig.Prefabs.GetPrefab(prefabId);
         if (prefab?.Object == null)
         {
-            Debug.LogError($"prefab of id{boardConfigDicePrefab} is null.");
+            Debug.LogError($"prefab of id{prefabId} is null.");
             return null;
         }
         
         var spawnedObject = Instantiate(prefab.Object, parent);
         if (spawnedObject == null)
         {
-            Debug.LogError($"Somehow spawned prefab of id{boardConfigDicePrefab} is null.");
+            Debug.LogError($"Somehow spawned prefab of id{prefabId} is null.");
         }
         
         return spawnedObject;
     }
-    
-    
+
+    public void SpawnAtPosition(int prefabId, Vector3 position)
+    {
+        var obj = Spawn(prefabId);
+        if (obj == null)
+        {
+            return;
+        }
+
+        obj.transform.position = position;
+    }
 }

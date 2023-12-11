@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Experimental.UIElements.StyleEnums;
 
 public class PointerBehaviour : MonoBehaviour
 {
@@ -38,9 +39,19 @@ public class PointerBehaviour : MonoBehaviour
     {
         GameMaster.CurrentActiveBoardDiceGameBehaviour.Input.IsAbleToGrabDice = false;
     }
-
+    
+    
+    private bool _visibilityState;
     public void ChangeVisibility(bool b)
     {
+        if (_visibilityState == b)
+        {
+            return;
+        }
+
+        _visibilityState = b;
+        Debug.Log($"Pointer visibility Changed to {b}, launching puff");
+        GameMaster.Spawner.SpawnAtPosition(MainConfig.GameplayConfig.PoofEffetPrefab,  transform.position);
         if (b == false)
         {
             GameMaster.CurrentActiveBoardDiceGameBehaviour.Input.IsAbleToGrabDice = false;

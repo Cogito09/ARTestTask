@@ -40,3 +40,7 @@ MonoBehaviour:
   - Id: 8
     DevName: CamerasSetup
     Object: {fileID: 739379829851534741, guid: 223a840913600bf41b36bf51a8320a03, type: 3}
+  - Id: 9
+    DevName: Poof
+    Object: {fileID: 8332960207733953594, guid: 76cd715b5e5d5db4fab7309924d27ff3,
+      type: 3}

@@ -238,18 +238,19 @@ public class DiceBehaviour : MonoBehaviour
     [SerializeField] private DiceFaceBehaviour _faceToEdit;
     
     [PropertyOrder(4)]
-    [InfoBox("5. Hold  [CTRL] and hoover over Dice for automatic placement")]
+    [InfoBox("5. Hold  [CTRL] and hoover over Dice for automatic placement. ")]
+    [InfoBox(" * Try To place faces as close to the models face center as possible! Those transforms are used for processing dice roll result ")]
     [InfoBox("6. Adjust edited face rotation")]
     [PropertyRange(0, 360)]
     public float FaceRotation = 0f;
     
     [PropertyOrder(6)]
-    [InfoBox("6. Adjust face position")]
+    [InfoBox("7. Adjust face position")]
     [PropertyRange(0, 0.15f)]
     public float FacePositionShift = 0.01f;
     
     [PropertyOrder(7)]
-    [InfoBox("7. Adjust sizes")]
+    [InfoBox("8. Adjust sizes")]
     [PropertyRange(0, "FaceMaxSizeRange")]
     public float FaceSize = 1;
     [PropertyOrder(10)]
