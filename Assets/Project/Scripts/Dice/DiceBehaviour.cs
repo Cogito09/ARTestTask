@@ -103,8 +103,9 @@ public class DiceBehaviour : MonoBehaviour
 
     public void Throw(Vector3 throwForce,Vector3 throwTorque)
     {
-        _rigidbody.AddForce(throwForce);
-        _rigidbody.AddTorque(throwTorque);
+        _rigidbody.AddForce(throwForce,ForceMode.Impulse);
+        //_rigidbody.AddTorque(throwTorque, ForceMode.Impulse);
+        _rigidbody.angularVelocity = throwTorque;
     }
 
     public void StopListenForResult()

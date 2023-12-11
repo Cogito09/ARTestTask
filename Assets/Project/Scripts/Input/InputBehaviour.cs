@@ -41,6 +41,7 @@ public class InputBehaviour : MonoBehaviour
     
     [ReadOnly] public bool IsAbleToGrabDice;
     [ReadOnly] public bool Grabbed;
+    [SerializeField] private float _downForce = 0.3f;
 
     public void Initialize()
     {
@@ -106,6 +107,7 @@ public class InputBehaviour : MonoBehaviour
         _lastPosition = Hand.transform.position;
     }
     
+    
     private void TryThrow()
     {
         var averageVelocity = GetAverageVelocity();
@@ -117,7 +119,9 @@ public class InputBehaviour : MonoBehaviour
             return;
         }
 
-        Throw(averageVelocity,_currentMoveVector);
+        var downwardForce = new Vector3(0, (-1 )* -_downForce, 0);
+        var forceVector = _currentMoveVector + downwardForce;
+        Throw(averageVelocity,forceVector);
     }
     
     private void Throw(float velocity,Vector3 forceVector)
@@ -129,11 +133,18 @@ public class InputBehaviour : MonoBehaviour
         var torqueXRandom = Random.Range(_torqueForceRangeMin, _torqueForceRangeMax);
         var torqueYRandom = Random.Range(_torqueForceRangeMin, _torqueForceRangeMax);
         var torqueZRandom = Random.Range(_torqueForceRangeMin, _torqueForceRangeMax);
-
-        var torqueForce = _torqueBase + new Vector3(torqueXRandom,torqueYRandom,torqueZRandom);
+        
+        var torqueForce =  new Vector3(
+            _torqueBase.x *torqueXRandom,
+            _torqueBase.y * torqueYRandom,
+            _torqueBase.z * torqueZRandom
+            );
+        
         DiceBehaviour.Throw(throwForce,torqueForce);
         
         ChangePointerAndHandState(HandAndPointerState.Visible);
+        
+        BoardDiceGame.OnDiceInsidePlayground();
     }
     
     public void ResetDice()

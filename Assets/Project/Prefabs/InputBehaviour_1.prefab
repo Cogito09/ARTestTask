@@ -44,12 +44,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxVelocityForThrow: 0
-  _minVelocityForThrow: 0.05
-  _throwModificator: 300
+  _minVelocityForThrow: 0.3
+  _throwModificator: 6.5
   _torqueForceRangeMin: -3000
   _torqueForceRangeMax: 3000
-  _torqueBase: {x: 100, y: 100, z: 100}
-  _numberOfLastRegisteredVelocities: 3
+  _torqueBase: {x: 10000, y: 10000, z: 10000}
+  _numberOfLastRegisteredVelocities: 4
   MaxRaycastDistance: 5000
   IsAbleToGrabDice: 0
   Grabbed: 0
+  _downForce: -0.2

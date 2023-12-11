@@ -21,8 +21,8 @@ public class BoardDiceGameBehaviour : MonoBehaviour
     [ReadOnly] public PointerBehaviour Pointer;
     
     public Transform DiceStartPosition => boardDesktop.DiceResetPosition;
-    private BoardBarrier BoardBarrier => boardDesktop.BoardBarrier;
-    private BoardDiceTriggerAreaBehaviour BoardDiceTriggerAreaBehaviour => boardDesktop.boardDiceTriggerAreaBehaviour;
+    //private BoardBarrier BoardBarrier => boardDesktop.BoardBarrier;
+    //private BoardDiceTriggerAreaBehaviour BoardDiceTriggerAreaBehaviour => boardDesktop.boardDiceTriggerAreaBehaviour;
     
     [ReadOnly] public DiceGameState State;
     [SerializeField] private double _rollTimeLimit;
@@ -70,7 +70,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
     {
         Input.Initialize();
         
-        BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground += OnDiceInsidePlayground;
+        //BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground += OnDiceInsidePlayground;
         DiceBehaviour.OnDiceResultCaptured += OnDiceResultCaptured;
         DiceBehaviour.OnDiceFailedToCaptureResult += OnDiceFailedToCaptureResult;
 
@@ -81,7 +81,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
     {
         State = DiceGameState.Unknown;
         
-        BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground -= OnDiceInsidePlayground;
+        //BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground -= OnDiceInsidePlayground;
         DiceBehaviour.OnDiceResultCaptured -= OnDiceResultCaptured;
         DiceBehaviour.OnDiceFailedToCaptureResult -= OnDiceFailedToCaptureResult;
 
@@ -109,7 +109,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         _starDiceRollTimestmap = Time.time;
 
         DiceBehaviour.StartListenForResult();
-        BoardBarrier.ChangeBarrierState(true);
+        //BoardBarrier.ChangeBarrierState(true);
     }
     
     private void OnDiceFailedToCaptureResult()
@@ -161,7 +161,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
     public void ResetDice()
     {
         Input.ResetDice();
-        BoardBarrier.ChangeBarrierState(false);
+        //BoardBarrier.ChangeBarrierState(false);
 
         State = DiceGameState.PlayerInput;
     }
