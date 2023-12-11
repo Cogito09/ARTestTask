@@ -43,11 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b89f8db34f4dbda6a105468013a553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Desktop: {fileID: 0}
+  boardDesktop: {fileID: 0}
   DiceBehaviour: {fileID: 0}
   Input: {fileID: 0}
   Hand: {fileID: 0}
   Pointer: {fileID: 0}
   State: 0
-  _rollTimeLimit: 8
-  _pauseDurationAfterResultAnnounced: 1.5
+  _rollTimeLimit: 6
+  _pauseDurationAfterResultAnnounced: 0.8

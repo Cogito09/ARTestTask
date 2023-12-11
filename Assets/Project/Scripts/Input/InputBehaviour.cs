@@ -20,7 +20,9 @@ public enum HandAndPointerState
     
 public class InputBehaviour : MonoBehaviour
 {
-    [SerializeField] private float _maxVelocityForThrow;
+    [SerializeField] private float _maxVelocityForRandomThrow;
+    [SerializeField] private float _minVelocityForRandomThrow;
+
     [SerializeField] private float _minVelocityForThrow;
     [SerializeField]private float _throwModificator;
     [SerializeField] private float _torqueForceRangeMin;
@@ -42,6 +44,7 @@ public class InputBehaviour : MonoBehaviour
     [ReadOnly] public bool IsAbleToGrabDice;
     [ReadOnly] public bool Grabbed;
     [SerializeField] private float _downForce = 0.3f;
+
 
     public void Initialize()
     {
@@ -141,7 +144,6 @@ public class InputBehaviour : MonoBehaviour
             );
         
         DiceBehaviour.Throw(throwForce,torqueForce);
-        
         ChangePointerAndHandState(HandAndPointerState.Visible);
         
         BoardDiceGame.OnDiceInsidePlayground();
@@ -240,13 +242,16 @@ public class InputBehaviour : MonoBehaviour
                 break;
             case HandAndPointerState.Grab:
                 Hand.ChangeVisibility(true);
-                Pointer.ChangeVisibility(false);
+                Pointer.ChangeVisibility(true);
                 
                 Hand.GrabbedVisualState(true);
+                Pointer.GrabbedVisualState();
                 break;
             case HandAndPointerState.Throw:
-                Hand.ThrowVisualState();
+                Hand.ChangeVisibility(true);
                 Pointer.ChangeVisibility(false);
+                
+                Hand.ThrowVisualState();
                 break;
         }
     }
@@ -260,11 +265,11 @@ public class InputBehaviour : MonoBehaviour
 
     public void RandomThrow()
     {
-        var randomizedVelocity = Random.Range(_minVelocityForThrow,_maxVelocityForThrow);
+        var randomizedVelocity = Random.Range(_minVelocityForRandomThrow,_maxVelocityForRandomThrow);
         var randomixedVector =  new Vector3(
-            Random.Range(0f,1f),
-            Random.Range(0f,1f),
-            Random.Range(0f,1f)
+            Random.Range(-1f,1f),
+            Random.Range(-1f,1f),
+            Random.Range(-1f,1f)
             );
         
         Throw(randomizedVelocity, randomixedVector.normalized);

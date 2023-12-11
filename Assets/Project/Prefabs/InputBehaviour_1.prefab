@@ -43,7 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b710dff484824db8948a84e02e450c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxVelocityForThrow: 0
+  _maxVelocityForRandomThrow: 1
+  _minVelocityForRandomThrow: 3
   _minVelocityForThrow: 0.3
   _throwModificator: 6.5
   _torqueForceRangeMin: -3000

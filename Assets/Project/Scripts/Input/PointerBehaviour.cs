@@ -47,4 +47,11 @@ public class PointerBehaviour : MonoBehaviour
         _grabbedHandLook.gameObject.SetActive(false);
         _ableToGrabLook.gameObject.SetActive(false);
     }
+    
+    public void GrabbedVisualState()
+    {
+        _freeHandLook.gameObject.SetActive(false);
+        _grabbedHandLook.gameObject.SetActive(true);
+        _ableToGrabLook.gameObject.SetActive(false);
+    }
 }

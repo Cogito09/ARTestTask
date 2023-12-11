@@ -26,9 +26,16 @@ public class DiceBehaviour : MonoBehaviour
     [SerializeField] private float _maxPositionsEqualityDistance;
     [SerializeField] private float _maxRotationEqualityEulerAngleDifference;
 
+    [SerializeField] private GameObject _highlightEffect;
+    private float _highlightEffectFinishTimestamp;
+    
     private void Awake()
     {
         _faceToEdit = null;
+        if (_highlightEffect != null)
+        {
+            _highlightEffect.ChangeActive(false);
+        }
     }
     
     public void Setup(DiceConfig diceConfig)
@@ -124,15 +131,32 @@ public class DiceBehaviour : MonoBehaviour
     {
         _motionlessCounter = 0;
     }
-#if UNITY_EDITOR
+
     private void Update()
     {
+#if UNITY_EDITOR
         if (Application.isPlaying == false)
         {
             RegisterEditorHotkey();
         }
+#endif
+
+        TrySwtichOffHighlight();
     }
-#endif  
+
+    private void TrySwtichOffHighlight()
+    {
+        if (Time.time < _highlightEffectFinishTimestamp)
+        {
+            return;
+        }
+
+        if (_highlightEffect != null)
+        {
+            _highlightEffect.ChangeActive(false);
+        }
+    }
+
     private void FixedUpdate()
     {
         if (_isListeningForResult == false)
@@ -191,7 +215,14 @@ public class DiceBehaviour : MonoBehaviour
 
     public void HighlightResult(float pauseDurationAfterResultAnnounced)
     {
-
+        if (_highlightEffect == null)
+        {
+            Debug.LogError($"_highlightEffect is not assinged in Dice named : {gameObject.name}");
+            return;
+        }
+        
+        _highlightEffect.ChangeActive(true);
+        _highlightEffectFinishTimestamp = Time.time + pauseDurationAfterResultAnnounced;
     }
     
     public void ResetVelocities()
@@ -225,6 +256,8 @@ public class DiceBehaviour : MonoBehaviour
     public float FaceMaxSizeRange = 5;
 
     private bool _wasRegistered = false;
+
+
     private void OnValidate()
     {
         _wasRegistered = false;
