@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab97c4c44d95445e887d2d1e6ab8d42e, type: 3}
   m_Name: GameplayConfig
   m_EditorClassIdentifier: 
-  DemoLevel:
-    BoardTemplate: 1
+  BoardToBePlayed: 1

@@ -4,15 +4,17 @@ using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Vector3 = UnityEngine.Vector3;
 
 [ExecuteInEditMode]
 public class DiceBehaviour : MonoBehaviour
 {
     [PropertyOrder(2)][InfoBox("Guide How to setup Dice")] 
+    [InfoBox("!!Please Edit on Scene. Editing in prefab sub-scene cause unexpected behaviour!!",InfoMessageType.Warning)] 
     [InfoBox("1. First add mesh, and generate new collider. If collider doesnt get updated exit->enter prefab mode or edit in scene view")]
-    [InfoBox("2. Put all needed Dice_Face.prefab 's for each face under root of this object")]
-    [InfoBox("3. Reference all the faces in Faces list underneith")]
+    [InfoBox("2. Add Dice_Face.prefab for each face and place it under root of this object")]
+    [InfoBox("3. Reference all the Dice_Face.prefab's in Faces list underneith")]
     [SerializeField] private List<DiceFaceBehaviour> _faces;
     [SerializeField] private Rigidbody _rigidbody;
     public Action<int> OnDiceResultCaptured;
@@ -27,7 +29,7 @@ public class DiceBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        _faceToPlacePosition = null;
+        _faceToEdit = null;
     }
     
     public void Setup(DiceConfig diceConfig)
@@ -185,18 +187,22 @@ public class DiceBehaviour : MonoBehaviour
 #if UNITY_EDITOR
 
 
-    [PropertyOrder(3)][InfoBox("4. Reference Face that you want to setup here, hold CTRL and hoover over Dice for automatic placement")]
-    [SerializeField] private DiceFaceBehaviour _faceToPlacePosition;
+    [FormerlySerializedAs("_faceEdited")]
+    [FormerlySerializedAs("_faceToPlacePosition")]
+    [PropertyOrder(3)][InfoBox("4. Reference Dice_Face under FaceToEdit that you want to place on Dice")]
+   
+    [SerializeField] private DiceFaceBehaviour _faceToEdit;
     
     [PropertyOrder(4)]
-    [InfoBox("5. Adjust edited face rotation")]
+    [InfoBox("5. Hold  [CTRL] and hoover over Dice for automatic placement")]
+    [InfoBox("6. Adjust edited face rotation")]
     [PropertyRange(0, 360)]
     public float FaceRotation = 0f;
     
     [PropertyOrder(6)]
     [InfoBox("6. Adjust face position")]
-    [PropertyRange(0, 0.25f)]
-    public float FacePositionShift = 0.1f;
+    [PropertyRange(0, 0.15f)]
+    public float FacePositionShift = 0.01f;
     
     [PropertyOrder(7)]
     [InfoBox("7. Adjust sizes")]
@@ -208,9 +214,9 @@ public class DiceBehaviour : MonoBehaviour
     private void OnValidate()
     {
         _wasRegistered = false;
-        if (_faceToPlacePosition != null)
+        if (_faceToEdit != null)
         {
-            _faceToPlacePosition.SetupVisualRotation(FaceRotation);
+            _faceToEdit.SetupVisualRotation(FaceRotation);
         }
         
         for (var i = 0; i < _faces.Count; i++)
@@ -255,7 +261,7 @@ public class DiceBehaviour : MonoBehaviour
 
     private void UpdatePointer()
     {
-        if (_faceToPlacePosition == null)
+        if (_faceToEdit == null)
         {
             return;
         }
@@ -284,11 +290,11 @@ public class DiceBehaviour : MonoBehaviour
             return;
         }
 
-        _faceToPlacePosition.transform.position = hitPoint;
+        _faceToEdit.transform.position = hitPoint;
         
-        var faceRotation =  Quaternion.LookRotation(_faceToPlacePosition.transform.localPosition, Vector3.up);
-        var vectorFromCenter = transform.position - _faceToPlacePosition.transform.position;
-        _faceToPlacePosition.transform.SetPositionAndRotation(_faceToPlacePosition.transform.position,faceRotation);
+        var faceRotation =  Quaternion.LookRotation(_faceToEdit.transform.localPosition, Vector3.up);
+        var vectorFromCenter = transform.position - _faceToEdit.transform.position;
+        _faceToEdit.transform.SetPositionAndRotation(_faceToEdit.transform.position,faceRotation);
     }
 #endif
 }

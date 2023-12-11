@@ -26,8 +26,7 @@ public class GameMaster : MonoBehaviour
     private BoardDiceGameBehaviour _boardDiceGameBehaviour;
     private BoardDiceGameSave _save;
     private BoardDiceGame _boardDiceGame;
-
-
+    
     private void Awake()
     {
         _loadingScreen.gameObject.SetActive(true);
@@ -55,8 +54,7 @@ public class GameMaster : MonoBehaviour
 
     private IEnumerator LoadBoardGame()
     {
-        var currentLevel = MainConfig.GameplayConfig.DemoLevel;
-        var boardConfigId = currentLevel.BoardTemplate;
+        var boardConfigId = MainConfig.GameplayConfig.BoardToBePlayed;
         var boardConfig = MainConfig.BoardsConfig.GetBoardConfig(boardConfigId);
 
         var uiBoardGame = Spawner.Spawn<UIBoardGameBehaviour>(boardConfig.UIBoardGamePrefab,_canvasRoot);

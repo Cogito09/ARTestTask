@@ -47,15 +47,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810d5147ff9443ca9472cb3ae82e1af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _faces: []
+  _faces:
+  - {fileID: 0}
   _rigidbody: {fileID: 5607427104481642596}
   _motionlessCounter: 0
   _minMotionlessFramesToProceedResult: 3
   _maxPositionsEqualityDistance: 0.01
   _maxRotationEqualityEulerAngleDifference: 0.01
-  _faceToPlacePosition: {fileID: 0}
-  FaceRotation: 280
-  FacePositionShift: 0.516
+  _faceToEdit: {fileID: 0}
+  FaceRotation: 0
+  FacePositionShift: 0.1
   FaceSize: 1.35
   FaceMaxSizeRange: 5
 --- !u!33 &5607427104484709480

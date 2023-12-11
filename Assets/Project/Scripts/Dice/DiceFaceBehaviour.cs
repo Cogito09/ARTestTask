@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -11,7 +12,7 @@ public class DiceFaceBehaviour : MonoBehaviour
     
     [SerializeField] private GameObject _gameplayViewHolder;
 
-    public DiceFaceConfig DiceConfig;
+    [ReadOnly]public DiceFaceConfig DiceConfig;
     public void Setup(DiceFaceConfig diceFaceConfig)
     {
         DiceConfig = diceFaceConfig;
