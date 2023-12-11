@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using Cinemachine;
-using Project.Scripts;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -31,7 +30,7 @@ public class GameMaster : MonoBehaviour
     private BoardDiceGameBehaviour _boardDiceGameBehaviour;
     private BoardDiceGameSave _save;
     private BoardDiceGame _boardDiceGame;
-    
+
     private void Awake()
     {
         _loadingScreen.gameObject.SetActive(true);
@@ -40,8 +39,13 @@ public class GameMaster : MonoBehaviour
 
     private IEnumerator Start()
     {
+        yield return StartLoading();
+    }
+
+    private IEnumerator StartLoading()
+    {
         yield return Load();
-        _loadingScreen.gameObject.SetActive(false);
+        _loadingScreen.gameObject.SetActive(false);    
     }
 
     private IEnumerator Load()
@@ -55,7 +59,7 @@ public class GameMaster : MonoBehaviour
     private IEnumerator LoadSave()
     {
         yield return null;
-        _save = ReadSaveFromPlayerPrefs();
+        _save = GetSave();
     }
 
     private IEnumerator LoadBoardGame()
@@ -81,20 +85,24 @@ public class GameMaster : MonoBehaviour
         if (_boardGameBehaviour != null)
         {
             _boardGameBehaviour.Unload();
-            Destroy(_boardGameBehaviour);
+            Destroy(_boardGameBehaviour.gameObject);
             _boardGameBehaviour = null;
         }
-
         
         _boardDiceGameBehaviour.Unload();
-        Destroy(_boardDiceGameBehaviour);
+        Destroy(_boardDiceGameBehaviour.gameObject);
         _boardDiceGameBehaviour = null;
     }
-    
 
-    private BoardDiceGameSave ReadSaveFromPlayerPrefs()
+    [Button]
+    public void LoadAgain()
     {
-        var save = JsonUtility.FromJson<BoardDiceGameSave>(PlayerPrefs.GetString("Save",JsonUtility.ToJson(new BoardDiceGameSave())));
+        StartCoroutine(StartLoading());
+    }
+    
+    private BoardDiceGameSave GetSave()
+    {
+        var save = new BoardDiceGameSave();
         return save;
     }
 }

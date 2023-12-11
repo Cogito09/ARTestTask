@@ -14,7 +14,7 @@ public enum DiceGameState
 
 public class BoardDiceGameBehaviour : MonoBehaviour
 {
-    [FormerlySerializedAs("boardDesktop")] [FormerlySerializedAs("Desktop")] [ReadOnly] public BoardDesktopBehaviour BoardDesktop;
+    [ReadOnly] public BoardDesktopBehaviour BoardDesktop;
     [ReadOnly] public DiceBehaviour DiceBehaviour;
     [ReadOnly] public InputBehaviour Input;
     [ReadOnly] public HandBehaviour Hand;
