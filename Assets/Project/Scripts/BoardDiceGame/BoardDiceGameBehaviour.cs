@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using Project.Scripts;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum DiceGameState
 {
@@ -13,23 +11,21 @@ public enum DiceGameState
 }
 
 public class BoardDiceGameBehaviour : MonoBehaviour
-{
+{ 
+    [ReadOnly] public DiceGameState State;
     [ReadOnly] public BoardDesktopBehaviour BoardDesktop;
     [ReadOnly] public DiceBehaviour DiceBehaviour;
     [ReadOnly] public InputBehaviour Input;
     [ReadOnly] public HandBehaviour Hand;
     [ReadOnly] public PointerBehaviour Pointer;
     [ReadOnly] public GameObject CamerasSetup;
-
-    public Transform DiceStartPosition => BoardDesktop.DiceResetPosition;
-    //private BoardBarrier BoardBarrier => boardDesktop.BoardBarrier;
-    //private BoardDiceTriggerAreaBehaviour BoardDiceTriggerAreaBehaviour => boardDesktop.boardDiceTriggerAreaBehaviour;
     
-    [ReadOnly] public DiceGameState State;
     private double _rollTimeLimit;
     private float _pauseDurationAfterResultAnnounced;
     private float _starDiceRollTimestmap;
     private float _diceResultCapturedTimestamp;
+    
+    public Transform DiceStartPosition => BoardDesktop.DiceResetPosition;
     
     public IEnumerator Setup(BoardDiceGame boardDiceGame)
     {
@@ -68,11 +64,9 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         SpawnDice(boardDiceGame);
         yield return null;
     }
-
-
+    
     private void Initialize(BoardDiceGame boardDiceGame)
     {
-
         _rollTimeLimit = boardDiceGame.BoardConfig.RollTimeLimit;
         if (_rollTimeLimit < 1)
         {
@@ -171,8 +165,6 @@ public class BoardDiceGameBehaviour : MonoBehaviour
     public void ResetDice()
     {
         Input.ResetDice();
-        //BoardBarrier.ChangeBarrierState(false);
-
         State = DiceGameState.PlayerInput;
     }
 }

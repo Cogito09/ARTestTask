@@ -23,7 +23,6 @@ public class HandBehaviour : MonoBehaviour
         }
  
         _visibilityState = b;
-        Debug.Log($"Hand visibility Changed to {b}, launching puff");
         GameMaster.Spawner.SpawnAtPosition(MainConfig.GameplayConfig.PoofEffetPrefab,  transform.position);
 
         _holder.ChangeActive(b);

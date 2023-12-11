@@ -1,5 +1,4 @@
-﻿using Project.Scripts;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {

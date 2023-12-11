@@ -1,7 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class DiceFaceBehaviour : MonoBehaviour
 {
@@ -9,7 +8,6 @@ public class DiceFaceBehaviour : MonoBehaviour
     [SerializeField] private GameObject _textHolder;
     [SerializeField] private SpriteRenderer _sprite;
     [SerializeField] private GameObject _spriteHolder;
-    
     [SerializeField] private GameObject _gameplayViewHolder;
 
     [ReadOnly]public DiceFaceConfig DiceConfig;

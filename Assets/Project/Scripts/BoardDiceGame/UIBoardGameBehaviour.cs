@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using TMPro;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class UIBoardGameBehaviour : MonoBehaviour

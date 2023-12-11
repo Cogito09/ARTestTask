@@ -17,6 +17,7 @@ public class DiceBehaviour : MonoBehaviour
     [InfoBox("3. Reference all the Dice_Face.prefab's in Faces list underneith")]
     [SerializeField] private List<DiceFaceBehaviour> _faces;
     [SerializeField] private Rigidbody _rigidbody;
+
     public Action<int> OnDiceResultCaptured;
     public Action OnDiceFailedToCaptureResult;
     private bool _isListeningForResult;
@@ -25,7 +26,6 @@ public class DiceBehaviour : MonoBehaviour
     [SerializeField] private float _minMotionlessFramesToProceedResult;
     [SerializeField] private float _maxPositionsEqualityDistance;
     [SerializeField] private float _maxRotationEqualityEulerAngleDifference;
-
     [SerializeField] private GameObject _highlightEffect;
     private float _highlightEffectFinishTimestamp;
     
@@ -111,7 +111,6 @@ public class DiceBehaviour : MonoBehaviour
     public void Throw(Vector3 throwForce,Vector3 throwTorque)
     {
         _rigidbody.AddForce(throwForce,ForceMode.Impulse);
-        //_rigidbody.AddTorque(throwTorque, ForceMode.Impulse);
         _rigidbody.angularVelocity = throwTorque;
     }
 
@@ -140,7 +139,6 @@ public class DiceBehaviour : MonoBehaviour
             RegisterEditorHotkey();
         }
 #endif
-
         TrySwtichOffHighlight();
     }
 
@@ -177,8 +175,7 @@ public class DiceBehaviour : MonoBehaviour
 
         TryProceedResult();
     }
-
-
+    
     private void WatchMotion()
     {
         var areRotationsAlmostEqual = AreVectorsAlmostEqual(_rigidbody.angularVelocity,Vector3.zero);
@@ -207,12 +204,7 @@ public class DiceBehaviour : MonoBehaviour
     {
         return Mathf.Abs(a-b) < delta; 
     }
-
-    private bool ArePositionsAlmostEqual(Vector3 currentPosition, Vector3 lastPostion)
-    {
-        return Vector3.Distance(currentPosition, lastPostion) < _maxPositionsEqualityDistance;
-    }
-
+    
     public void HighlightResult(float pauseDurationAfterResultAnnounced)
     {
         if (_highlightEffect == null)
@@ -231,6 +223,7 @@ public class DiceBehaviour : MonoBehaviour
         _rigidbody.angularVelocity = Vector3.zero;
     }
 
+    
 #if UNITY_EDITOR
     [FormerlySerializedAs("_faceEdited")]
     [FormerlySerializedAs("_faceToPlacePosition")]
@@ -255,10 +248,8 @@ public class DiceBehaviour : MonoBehaviour
     public float FaceSize = 1;
     [PropertyOrder(10)]
     public float FaceMaxSizeRange = 5;
-
     private bool _wasRegistered = false;
-
-
+    
     private void OnValidate()
     {
         _wasRegistered = false;
@@ -319,7 +310,7 @@ public class DiceBehaviour : MonoBehaviour
         }
         
         Vector3 mousePosition = Event.current.mousePosition;
-        var mouseRay = HandleUtility.GUIPointToWorldRay(mousePosition);//SceneView.lastActiveSceneView.camera.ScreenPointToRay(mousePosition);// Camera.main.ScreenPointToRay();
+        var mouseRay = HandleUtility.GUIPointToWorldRay(mousePosition);
         var allHits = Physics.RaycastAll(mouseRay, 1000000f);
         var isHit = false;
         var hitPoint = Vector3.zero;    
@@ -338,9 +329,7 @@ public class DiceBehaviour : MonoBehaviour
         }
 
         _faceToEdit.transform.position = hitPoint;
-        
         var faceRotation =  Quaternion.LookRotation(_faceToEdit.transform.localPosition, Vector3.up);
-        var vectorFromCenter = transform.position - _faceToEdit.transform.position;
         _faceToEdit.transform.SetPositionAndRotation(_faceToEdit.transform.position,faceRotation);
     }
 #endif

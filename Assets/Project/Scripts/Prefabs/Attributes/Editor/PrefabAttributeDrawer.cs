@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Project.Scripts;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;

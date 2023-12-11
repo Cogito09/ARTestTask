@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Cinemachine;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -8,7 +7,10 @@ public class GameMaster : MonoBehaviour
 {
     private static GameMaster _instance;
     public static GameMaster Instance => _instance;
-
+    
+    private bool _isGameLoaded;
+    public static bool IsGameLoaded => Instance == null ? false : Instance._isGameLoaded;
+    
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private MainConfig _mainConfig;
     [SerializeField] private Spawner _spawner;
@@ -16,16 +18,13 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private CinemachineBrain _cinemachineBrain;
     [SerializeField] private RectTransform _canvasRoot;
     
-    public static CinemachineBrain MainCameraBrain => _instance._cinemachineBrain;
-    public static Camera MainCamera => Instance._mainCamera;
     public static MainConfig MainConfig => _instance._mainConfig;
     public static Spawner Spawner => _instance._spawner;
-    private bool _isGameLoaded;
-    public static bool IsGameLoaded => Instance == null ? false : Instance._isGameLoaded;
-    
+    public static Camera MainCamera => Instance._mainCamera;
+    public static CinemachineBrain MainCameraBrain => _instance._cinemachineBrain;
     public static BoardDiceGameBehaviour CurrentActiveBoardDiceGameBehaviour => Instance._boardDiceGameBehaviour;
     public static BoardDiceGame CurrentBoardDiceGameLogic => Instance._boardDiceGame;
-
+    
     private UIBoardGameBehaviour _boardGameBehaviour;
     private BoardDiceGameBehaviour _boardDiceGameBehaviour;
     private BoardDiceGameSave _save;
@@ -66,12 +65,9 @@ public class GameMaster : MonoBehaviour
     {
         var boardConfigId = MainConfig.GameplayConfig.BoardToBePlayed;
         var boardConfig = MainConfig.BoardsConfig.GetBoardConfig(boardConfigId);
-
-        var uiBoardGame = Spawner.Spawn<UIBoardGameBehaviour>(boardConfig.UIBoardGamePrefab,_canvasRoot);
-        _boardGameBehaviour = uiBoardGame;
         
+        _boardGameBehaviour = Spawner.Spawn<UIBoardGameBehaviour>(boardConfig.UIBoardGamePrefab,_canvasRoot);
         _boardDiceGame = new BoardDiceGame(boardConfig, _save);
-
         _boardDiceGameBehaviour = Spawner.Spawn<BoardDiceGameBehaviour>(boardConfig.BoardPrefab);
         yield return _boardDiceGameBehaviour.Setup(_boardDiceGame);
     }

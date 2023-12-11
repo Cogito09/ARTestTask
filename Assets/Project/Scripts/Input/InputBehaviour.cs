@@ -136,7 +136,6 @@ public class InputBehaviour : MonoBehaviour
         {
             ChangePointerAndHandState(HandAndPointerState.Visible);
         }
-
         
         Debug.Log($"Velocity too slow, reseting.");
         BoardDiceGame.OnDiceRolledForScore();
@@ -146,6 +145,7 @@ public class InputBehaviour : MonoBehaviour
     {
         GameMaster.Spawner.SpawnAtPosition(MainConfig.GameplayConfig.PoofEffetPrefab,  DiceBehaviour.transform.position);
         GameMaster.Spawner.SpawnAtPosition(MainConfig.GameplayConfig.PoofEffetPrefab,  BoardDiceGame.DiceStartPosition.position);
+        
         DiceBehaviour.transform.SetParent(null);
         DiceBehaviour.transform.position = BoardDiceGame.DiceStartPosition.position;
         DiceBehaviour.ResetVelocities();
@@ -205,11 +205,6 @@ public class InputBehaviour : MonoBehaviour
         }
         
         SetPointerOnRaycastHit(boardInputPlaneRaycastHit);
-    }
-
-    private void ReleaseDice()
-    {
-        ResetDice();
     }
 
     private void GrabDice()

@@ -50,7 +50,6 @@ public class PointerBehaviour : MonoBehaviour
         }
 
         _visibilityState = b;
-        Debug.Log($"Pointer visibility Changed to {b}, launching puff");
         GameMaster.Spawner.SpawnAtPosition(MainConfig.GameplayConfig.PoofEffetPrefab,  transform.position);
         if (b == false)
         {
