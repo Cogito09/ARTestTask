@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DicesConfig", menuName = "Configs/DicesConfig", order = 0)]
 public class DicesConfig : ScriptableObject
 {
+    [InfoBox("Guide")]
+    [InfoBox("To create new dice, please create new Dice prefab, you can use Dice_Template.prefab for reference. Add mesh, generate collider, and follow steps for easy face placement")]
     public List<DiceConfig> Dices;
 
     public DiceConfig GetConfig(int diceConfigId)
@@ -21,7 +24,6 @@ public class DicesConfig : ScriptableObject
         Debug.LogError($"Dice cofnig of id {diceConfigId} is not present!");
         return null;
     }
-
 
     public void OnValidate()
     {

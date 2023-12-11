@@ -43,23 +43,21 @@ public class BoardDiceGameBehaviour : MonoBehaviour
             Debug.LogError($"BoardDiceGameConfig is null");
             yield break;
         }
-
-        SetupDice(boardDiceGame);
+        
         yield return SpawnObjects(boardDiceGame);
+        SpawnDice(boardDiceGame);
         Initialize();
     }
 
-    private void SetupDice(BoardDiceGame boardDiceGame)
+    private void SpawnDice(BoardDiceGame boardDiceGame)
     {
         var diceConfigId = boardDiceGame.BoardConfig.Dice;
         var diceConfig = MainConfig.DicesConfig.GetConfig(diceConfigId);
-       DiceBehaviour = GameMaster.Spawner.Spawn<DiceBehaviour>(diceConfig.PrefabId);
-
+       DiceBehaviour = GameMaster.Spawner.Spawn<DiceBehaviour>(diceConfig.DicePrefab);
     }
 
     private IEnumerator SpawnObjects(BoardDiceGame boardDiceGame)
     {
-
         Input = GameMaster.Spawner.Spawn<InputBehaviour>(boardDiceGame.BoardConfig.InputPrefab);
         Hand = GameMaster.Spawner.Spawn<HandBehaviour>(boardDiceGame.BoardConfig.HandPrefab);
         Pointer = GameMaster.Spawner.Spawn<PointerBehaviour>(boardDiceGame.BoardConfig.PointerPrefab);

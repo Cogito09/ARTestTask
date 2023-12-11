@@ -140,6 +140,7 @@ public class InputBehaviour : MonoBehaviour
     {
         DiceBehaviour.transform.SetParent(null);
         DiceBehaviour.transform.position = BoardDiceGame.DiceStartPosition.position;
+        DiceBehaviour.ResetVelocities();
         DiceBehaviour.ChangeKinematic(false);
     }
 

@@ -8,7 +8,7 @@ public class DiceFaceConfig
     [ReadOnly] public int FaceIndex;
     public int Score;
     [ShowIf("IsShowingSymbolTextInEditor")]public string SymbolText;
-    [ShowIf("IsShowingSymbolTextSameAsScore")]public bool IsSymbolTextSameAsScore;
+    [ShowIf("IsShowingSymbolTextSameAsScore")]public bool IsSymbolTextSameAsScore = true;
     [ShowIf("IsShowingIsUsingSymbolSprite")]public bool IsUsingSymbolSprite;
     [ShowIf("IsShowingSymbolSpritee")]public Sprite SymbolSprite;
     

@@ -424,7 +424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DiceResetPosition: {fileID: 3358909808340441085}
   BoardBarrier: {fileID: 2565907880503139747}
-  diceTriggerArea: {fileID: 2081038071716931549}
+  boardDiceTriggerAreaBehaviour: {fileID: 2081038071716931549}
 --- !u!33 &8471225540315852472
 MeshFilter:
   m_ObjectHideFlags: 0

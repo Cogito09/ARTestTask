@@ -4,15 +4,17 @@ using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Vector3 = UnityEngine.Vector3;
 
 [ExecuteInEditMode]
 public class DiceBehaviour : MonoBehaviour
 {
-
+    [PropertyOrder(2)][InfoBox("Guide How to setup Dice")] 
+    [InfoBox("1. First add mesh, and generate new collider. If collider doesnt get updated exit->enter prefab mode or edit in scene view")]
+    [InfoBox("2. Put all needed Dice_Face.prefab 's for each face under root of this object")]
+   
+    [InfoBox("3. Reference all the faces in Faces list underneith")]
     [SerializeField] private List<DiceFaceBehaviour> _faces;
-    
     [SerializeField] private Rigidbody _rigidbody;
     public Action<int> OnDiceResultCaptured;
     public Action OnDiceFailedToCaptureResult;
@@ -130,9 +132,50 @@ public class DiceBehaviour : MonoBehaviour
 
 
 #if UNITY_EDITOR
+
+
+    [PropertyOrder(3)][InfoBox("4. Reference Face that you want to setup here, hold CTRL and hoover over Dice for automatic placement")]
     [SerializeField] private DiceFaceBehaviour _faceToPlacePosition;
-    private bool _wasRegistered = false;
     
+    [PropertyOrder(4)]
+    [InfoBox("5. Adjust edited face rotation")]
+    [PropertyRange(0, 360)]
+    public float FaceRotation = 0f;
+    
+    [PropertyOrder(6)]
+    [InfoBox("6. Adjust face position")]
+    [PropertyRange(0, 0.25f)]
+    public float FacePositionShift = 0.1f;
+    
+    [PropertyOrder(7)]
+    [InfoBox("7. Adjust sizes")]
+    [PropertyRange(0, "FaceMaxSizeRange")]
+    public float FaceSize = 1;
+    [PropertyOrder(10)]
+    public float FaceMaxSizeRange = 5;
+
+    private void OnValidate()
+    {
+        _wasRegistered = false;
+        if (_faceToPlacePosition != null)
+        {
+            _faceToPlacePosition.SetupVisualRotation(FaceRotation);
+        }
+        
+        for (var i = 0; i < _faces.Count; i++)
+        {
+            var face = _faces[i];
+            if (face == null)
+            {
+                continue;
+            }
+            
+            face.SetupVisualSize(FaceSize);
+            face.SetupFacePostionShift(FacePositionShift);
+        }
+    }
+    
+    private bool _wasRegistered = false;
     public void RegisterEditorHotkey()
     {
         if (_wasRegistered)
@@ -141,22 +184,25 @@ public class DiceBehaviour : MonoBehaviour
         }
 
         _wasRegistered = true;
-        SceneView.onSceneGUIDelegate += view =>
-        {
-            var e = Event.current;
-            if (e == null)
-            {
-                return;
-            }
-
-            if (e.control == true)
-            {
-                Debug.Log($"control clicked");
-                UpdatePointer();
-            }
-        };
+        SceneView.onSceneGUIDelegate -= ONSceneGUIDelegate;
+        SceneView.onSceneGUIDelegate += ONSceneGUIDelegate;
     }
-    
+
+    private void ONSceneGUIDelegate(SceneView sceneview)
+    {
+        var e = Event.current;
+        if (e == null)
+        {
+            return;
+        }
+
+        if (e.control == true)
+        {
+            Debug.Log($"control clicked");
+            UpdatePointer();
+        }
+    }
+
     private void UpdatePointer()
     {
         Debug.Log($"clicled space!");
@@ -195,67 +241,10 @@ public class DiceBehaviour : MonoBehaviour
         var vectorFromCenter = transform.position - _faceToPlacePosition.transform.position;
         _faceToPlacePosition.transform.SetPositionAndRotation(_faceToPlacePosition.transform.position,faceRotation);
     }
-    
-    [PropertyOrder(2)][Button]
-    public void SetupFacesRoatations()
-    {
-        if (_faces == null)
-        {
-            return;
-        }
-
-        for (var i = 0; i < _faces.Count; i++)
-        {
-            var face =_faces[i];
-            if (face != null)
-            {
-                var faceRotation =  Quaternion.LookRotation(face.transform.localPosition, Vector3.up);
-                var vectorFromCenter = transform.position - face.transform.position;
-                face.transform.SetPositionAndRotation(face.transform.position,faceRotation);
-            }
-        }
-        
-        PreviewFacesMode();
-    }
-
-    [PropertyOrder(2)][Button]
-    public void EnableSetPostionMode()
-    {
-        for (var i = 0; i < _faces.Count; i++)
-        {
-            var face = _faces[i];
-            face.SetupDebugMode(true);
-        }
-    }
-
-    [PropertyOrder(2)][Button]
-    public void PreviewFacesMode()
-    {
-        for (var i = 0; i < _faces.Count; i++)
-        {
-            var face = _faces[i];
-            face.SetupDebugMode(false);
-        }
-    }
-
-    [PropertyRange(0, "FaceMaxRange"), PropertyOrder(3)]
-    public float FaceSize = 1;
-    [PropertyOrder(4)]
-    public float FaceMaxRange = 5;
-
-    private void OnValidate()
-    {
-        _wasRegistered = false;
-        for (var i = 0; i < _faces.Count; i++)
-        {
-            var face = _faces[i];
-            if (face == null)
-            {
-                continue;
-            }
-            
-            face.SetupVisualSize(FaceSize);
-        }
-    }
 #endif
+    public void ResetVelocities()
+    {
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.angularVelocity = Vector3.zero;
+    }
 }

@@ -15,30 +15,79 @@ MonoBehaviour:
   Dices:
   - Id: 1
     DevName: Dice_Twelewe_Faces
-    NumberOfFaces: 4
-    PrefabId: 3
+    NumberOfFaces: 12
+    DicePrefab: {fileID: 5607427104481642602, guid: 1e3f9b0dfa31bd04280fe4827f2423bf,
+      type: 3}
     Faces:
     - FaceIndex: 1
-      Score: 0
+      Score: 1
       SymbolText: 
-      IsSymbolTextSameAsScore: 0
+      IsSymbolTextSameAsScore: 1
       IsUsingSymbolSprite: 0
       SymbolSprite: {fileID: 0}
     - FaceIndex: 2
-      Score: 0
+      Score: 2
       SymbolText: 
-      IsSymbolTextSameAsScore: 0
+      IsSymbolTextSameAsScore: 1
       IsUsingSymbolSprite: 0
       SymbolSprite: {fileID: 0}
     - FaceIndex: 3
-      Score: 0
+      Score: 3
       SymbolText: 
-      IsSymbolTextSameAsScore: 0
+      IsSymbolTextSameAsScore: 1
       IsUsingSymbolSprite: 0
       SymbolSprite: {fileID: 0}
     - FaceIndex: 4
-      Score: 0
+      Score: 4
       SymbolText: 
-      IsSymbolTextSameAsScore: 0
+      IsSymbolTextSameAsScore: 1
+      IsUsingSymbolSprite: 0
+      SymbolSprite: {fileID: 0}
+    - FaceIndex: 5
+      Score: 5
+      SymbolText: 
+      IsSymbolTextSameAsScore: 1
+      IsUsingSymbolSprite: 0
+      SymbolSprite: {fileID: 0}
+    - FaceIndex: 6
+      Score: 6
+      SymbolText: 
+      IsSymbolTextSameAsScore: 1
+      IsUsingSymbolSprite: 0
+      SymbolSprite: {fileID: 0}
+    - FaceIndex: 7
+      Score: 7
+      SymbolText: 
+      IsSymbolTextSameAsScore: 1
+      IsUsingSymbolSprite: 0
+      SymbolSprite: {fileID: 0}
+    - FaceIndex: 8
+      Score: 8
+      SymbolText: 
+      IsSymbolTextSameAsScore: 1
+      IsUsingSymbolSprite: 0
+      SymbolSprite: {fileID: 0}
+    - FaceIndex: 9
+      Score: 9
+      SymbolText: 
+      IsSymbolTextSameAsScore: 1
+      IsUsingSymbolSprite: 0
+      SymbolSprite: {fileID: 0}
+    - FaceIndex: 10
+      Score: 10
+      SymbolText: 
+      IsSymbolTextSameAsScore: 1
+      IsUsingSymbolSprite: 0
+      SymbolSprite: {fileID: 0}
+    - FaceIndex: 11
+      Score: 11
+      SymbolText: 
+      IsSymbolTextSameAsScore: 1
+      IsUsingSymbolSprite: 0
+      SymbolSprite: {fileID: 0}
+    - FaceIndex: 12
+      Score: 12
+      SymbolText: 
+      IsSymbolTextSameAsScore: 1
       IsUsingSymbolSprite: 0
       SymbolSprite: {fileID: 0}
