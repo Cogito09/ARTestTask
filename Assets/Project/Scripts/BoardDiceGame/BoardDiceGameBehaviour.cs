@@ -102,7 +102,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
 
     }
 
-    private void RandomRoll()
+    public void RandomRoll()
     {
         Input.RandomThrow();
         

@@ -21,3 +21,4 @@ MonoBehaviour:
     PointerPrefab: 5
     HandPrefab: 2
     InputPrefab: 6
+    UIBoardGamePrefab: 7

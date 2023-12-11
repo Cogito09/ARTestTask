@@ -40,8 +40,7 @@ public class BoardAttributeDrawer : OdinAttributeDrawer<BoardAttribute,int>
         var values = _content.Values.ToArray();
         var indexOfCurrentItem = _ids.IndexOf( ValueEntry.SmartValue);
         var index = EditorGUILayout.Popup(label, indexOfCurrentItem, values);
-
-        Debug.Log($"Index : {index}");
+        
         if(index < 0)
         {
             return;

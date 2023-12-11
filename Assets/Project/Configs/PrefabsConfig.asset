@@ -33,3 +33,7 @@ MonoBehaviour:
     DevName: InputBehaviour_1
     Object: {fileID: 4512680365916201350, guid: 361d78f377490334ca73bd27c208605f,
       type: 3}
+  - Id: 7
+    DevName: UIBoard
+    Object: {fileID: 7004966225228208146, guid: 5f3f448ae46cf82448ca28a5b6435788,
+      type: 3}

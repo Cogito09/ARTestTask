@@ -11,16 +11,22 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private MainConfig _mainConfig;
     [SerializeField] private Spawner _spawner;
     [SerializeField] private Camera _mainCamera;
+    [SerializeField] private RectTransform _canvasRoot;
+    
     public static Camera MainCamera => Instance._mainCamera;
     public static MainConfig MainConfig => _instance._mainConfig;
     public static Spawner Spawner => _instance._spawner;
     private bool _isGameLoaded;
-    private bool IsGameLoaded => Instance == null ? false : Instance._isGameLoaded;
+    public static bool IsGameLoaded => Instance == null ? false : Instance._isGameLoaded;
     
     public static BoardDiceGameBehaviour CurrentActiveBoardDiceGameBehaviour => Instance._boardDiceGameBehaviour;
+    public static BoardDiceGame CurrentBoardDiceGameLogic => Instance._boardDiceGame;
+    
+    private UIBoardGameBehaviour _boardGameBehaviour;
     private BoardDiceGameBehaviour _boardDiceGameBehaviour;
     private BoardDiceGameSave _save;
     private BoardDiceGame _boardDiceGame;
+
 
     private void Awake()
     {
@@ -53,6 +59,9 @@ public class GameMaster : MonoBehaviour
         var boardConfigId = currentLevel.BoardTemplate;
         var boardConfig = MainConfig.BoardsConfig.GetBoardConfig(boardConfigId);
 
+        var uiBoardGame = Spawner.Spawn<UIBoardGameBehaviour>(boardConfig.UIBoardGamePrefab,_canvasRoot);
+        _boardGameBehaviour = uiBoardGame;
+        
         _boardDiceGame = new BoardDiceGame(boardConfig, _save);
         _boardDiceGame.Initialize();
         
