@@ -51,4 +51,4 @@ MonoBehaviour:
   MaxDistance: 5000
   IsAbleToGrabDice: 0
   Grabbed: 0
-  _numberOfLastRegisteredVelocities: 5
+  _numberOfLastRegisteredVelocities: 3

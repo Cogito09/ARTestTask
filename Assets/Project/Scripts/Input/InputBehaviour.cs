@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
+using Vector3 = UnityEngine.Vector3;
 
 public enum HandAndPointerState
 {
@@ -17,14 +20,20 @@ public enum HandAndPointerState
     
 public class InputBehaviour : MonoBehaviour
 {
-    [SerializeField] private double _minVelocityForThrow;
+    [SerializeField] private float _maxVelocityForThrow;
+    [SerializeField] private float _minVelocityForThrow;
     [SerializeField]private float _throwModificator;
     [SerializeField] private float _torqueForceRangeMin;
     [SerializeField] private float _torqueForceRangeMax;
     [SerializeField] private Vector3 _torqueBase;
+    [SerializeField] private int _numberOfLastRegisteredVelocities;
+    [FormerlySerializedAs("MaxDistance")]  [SerializeField]private float MaxRaycastDistance = 5000;
+    private readonly LinkedList<float> _lastVelocities = new LinkedList<float>();
+    private Vector3 _lastPosition;
+    private Vector3 _currentMoveVector;
+
     
     private int InputLayer;
-    public float MaxDistance = 5000;
     private DiceBehaviour DiceBehaviour => GameMaster.CurrentActiveBoardDiceGameBehaviour.DiceBehaviour;
     private HandBehaviour Hand  => GameMaster.CurrentActiveBoardDiceGameBehaviour.Hand;
     private PointerBehaviour Pointer => GameMaster.CurrentActiveBoardDiceGameBehaviour.Pointer;
@@ -56,12 +65,8 @@ public class InputBehaviour : MonoBehaviour
             RegisterVelocity();
         }
     }
-
-    [SerializeField] private int _numberOfLastRegisteredVelocities;
-    private readonly LinkedList<float> _lastVelocities = new LinkedList<float>();
-    private Vector3 _lastPosition;
-    private Vector3 _currentMoveVector;
     
+
     private void RegisterVelocity()
     {
         var currentPosition = Hand.transform.position;
@@ -112,15 +117,15 @@ public class InputBehaviour : MonoBehaviour
             return;
         }
 
-        Throw(averageVelocity);
+        Throw(averageVelocity,_currentMoveVector);
     }
     
-    private void Throw(float velocity)
+    private void Throw(float velocity,Vector3 forceVector)
     {
         DiceBehaviour.transform.SetParent(null);
         DiceBehaviour.ChangeKinematic(false);
         
-        var throwForce = _currentMoveVector * velocity * _throwModificator;
+        var throwForce = forceVector.normalized * velocity * _throwModificator;
         var torqueXRandom = Random.Range(_torqueForceRangeMin, _torqueForceRangeMax);
         var torqueYRandom = Random.Range(_torqueForceRangeMin, _torqueForceRangeMax);
         var torqueZRandom = Random.Range(_torqueForceRangeMin, _torqueForceRangeMax);
@@ -144,7 +149,7 @@ public class InputBehaviour : MonoBehaviour
         var isReleased = Input.GetMouseButtonUp(0);
         var pointer = Input.mousePosition;
         var ray = GameMaster.MainCamera.ScreenPointToRay(new Vector3(pointer.x, pointer.y, 0));
-        var raycastHits = Physics.RaycastAll(ray,MaxDistance,InputLayer);
+        var raycastHits = Physics.RaycastAll(ray,MaxRaycastDistance,InputLayer);
         
         if (Grabbed && isReleased)
         {
@@ -233,5 +238,17 @@ public class InputBehaviour : MonoBehaviour
         var pos = hit.point;
         Pointer.transform.position = pos;
         Hand.transform.position = pos;
+    }
+
+    public void RandomThrow()
+    {
+        var randomizedVelocity = Random.Range(_minVelocityForThrow,_maxVelocityForThrow);
+        var randomixedVector =  new Vector3(
+            Random.Range(0f,1f),
+            Random.Range(0f,1f),
+            Random.Range(0f,1f)
+            );
+        
+        Throw(randomizedVelocity, randomixedVector.normalized);
     }
 }

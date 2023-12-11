@@ -15,3 +15,4 @@ MonoBehaviour:
   _prefabsConfig: {fileID: 11400000, guid: ae847eab23fd1954a85703e7efe1f1b0, type: 2}
   _boardsConfig: {fileID: 11400000, guid: 54eff5b8775efc249ba1747f11f4c555, type: 2}
   _gameplayConfig: {fileID: 11400000, guid: ede4fd9e5fcf15b4a9dd2452217c5f89, type: 2}
+  _dicesConfig: {fileID: 11400000, guid: 303fc665d24deb54987f89e4d1eea261, type: 2}

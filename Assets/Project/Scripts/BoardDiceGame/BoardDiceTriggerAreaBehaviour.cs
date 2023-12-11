@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class DiceTriggerBoardBarrier : MonoBehaviour
+public class BoardDiceTriggerAreaBehaviour : MonoBehaviour
 {
     public Action OnDiceInsidePlayground;
     

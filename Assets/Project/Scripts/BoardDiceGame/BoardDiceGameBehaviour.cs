@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum DiceGameState
 {
@@ -12,15 +13,15 @@ public enum DiceGameState
 
 public class BoardDiceGameBehaviour : MonoBehaviour
 {
-    [ReadOnly] public DesktopBehaviour Desktop;
+    [FormerlySerializedAs("Desktop")] [ReadOnly] public BoardDesktopBehaviour boardDesktop;
     [ReadOnly] public DiceBehaviour DiceBehaviour;
     [ReadOnly] public InputBehaviour Input;
     [ReadOnly] public HandBehaviour Hand;
     [ReadOnly] public PointerBehaviour Pointer;
     
-    public Transform DiceStartPosition => Desktop.DiceResetPosition;
-    private BoardBarrier BoardBarrier => Desktop.BoardBarrier;
-    private DiceTriggerBoardBarrier DiceTriggerBoardBarrier => Desktop.DiceTriggerBoardBarrier;
+    public Transform DiceStartPosition => boardDesktop.DiceResetPosition;
+    private BoardBarrier BoardBarrier => boardDesktop.BoardBarrier;
+    private BoardDiceTriggerAreaBehaviour BoardDiceTriggerAreaBehaviour => boardDesktop.boardDiceTriggerAreaBehaviour;
     
     [ReadOnly] public DiceGameState State;
     [SerializeField] private double _rollTimeLimit;
@@ -52,7 +53,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         Input = GameMaster.Spawner.Spawn<InputBehaviour>(boardDiceGame.BoardConfig.InputPrefab);
         Hand = GameMaster.Spawner.Spawn<HandBehaviour>(boardDiceGame.BoardConfig.HandPrefab);
         Pointer = GameMaster.Spawner.Spawn<PointerBehaviour>(boardDiceGame.BoardConfig.PointerPrefab);
-        Desktop = GameMaster.Spawner.Spawn<DesktopBehaviour>(boardDiceGame.BoardConfig.DesktopPrefab);
+        boardDesktop = GameMaster.Spawner.Spawn<BoardDesktopBehaviour>(boardDiceGame.BoardConfig.DesktopPrefab);
         yield return null;
     }
     
@@ -60,20 +61,37 @@ public class BoardDiceGameBehaviour : MonoBehaviour
     {
         Input.Initialize();
         
-        DiceTriggerBoardBarrier.OnDiceInsidePlayground += OnDiceInsidePlayground;
+        BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground += OnDiceInsidePlayground;
         DiceBehaviour.OnDiceResultCaptured += OnDiceResultCaptured;
         DiceBehaviour.OnDiceFailedToCaptureResult += OnDiceFailedToCaptureResult;
+        DiceBehaviour.OnDiceUnableToGetClearResult += OnDiceUnableToGetClearResult;
 
         ResetDice();
     }
     
     public void Unload()
     {
-        DiceTriggerBoardBarrier.OnDiceInsidePlayground -= OnDiceInsidePlayground;
+        BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground -= OnDiceInsidePlayground;
         DiceBehaviour.OnDiceResultCaptured -= OnDiceResultCaptured;
         DiceBehaviour.OnDiceFailedToCaptureResult -= OnDiceFailedToCaptureResult;
+        DiceBehaviour.OnDiceUnableToGetClearResult -= OnDiceUnableToGetClearResult;
     }
-    
+
+    private void OnDiceUnableToGetClearResult()
+    {
+        DiceBehaviour.StopListenForResult();
+
+        RandomRoll();
+
+    }
+
+    private void RandomRoll()
+    {
+        Input.RandomThrow();
+        
+        OnDiceInsidePlayground();
+    }
+
     public void OnDiceInsidePlayground()
     {
         State = DiceGameState.DiceRoll;
