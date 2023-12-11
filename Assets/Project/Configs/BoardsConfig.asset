@@ -16,7 +16,7 @@ MonoBehaviour:
   - Id: 1
     DevName: DemoBoard
     BoardPrefab: 4
-    DicePrefab: 3
+    Dice: 1
     DesktopPrefab: 1
     PointerPrefab: 5
     HandPrefab: 2

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Project.Scripts;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -43,13 +44,22 @@ public class BoardDiceGameBehaviour : MonoBehaviour
             yield break;
         }
 
+        SetupDice(boardDiceGame);
         yield return SpawnObjects(boardDiceGame);
         Initialize();
     }
 
+    private void SetupDice(BoardDiceGame boardDiceGame)
+    {
+        var diceConfigId = boardDiceGame.BoardConfig.Dice;
+        var diceConfig = MainConfig.DicesConfig.GetConfig(diceConfigId);
+       DiceBehaviour = GameMaster.Spawner.Spawn<DiceBehaviour>(diceConfig.PrefabId);
+
+    }
+
     private IEnumerator SpawnObjects(BoardDiceGame boardDiceGame)
     {
-        DiceBehaviour = GameMaster.Spawner.Spawn<DiceBehaviour>(boardDiceGame.BoardConfig.DicePrefab);
+
         Input = GameMaster.Spawner.Spawn<InputBehaviour>(boardDiceGame.BoardConfig.InputPrefab);
         Hand = GameMaster.Spawner.Spawn<HandBehaviour>(boardDiceGame.BoardConfig.HandPrefab);
         Pointer = GameMaster.Spawner.Spawn<PointerBehaviour>(boardDiceGame.BoardConfig.PointerPrefab);

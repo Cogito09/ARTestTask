@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DicesConfig", menuName = "Configs/DicesConfig", order = 0)]
@@ -23,7 +22,8 @@ public class DicesConfig : ScriptableObject
         return null;
     }
 
-    private void OnValidate()
+
+    public void OnValidate()
     {
         for (var i = 0; i < Dices.Count; i++)
         {

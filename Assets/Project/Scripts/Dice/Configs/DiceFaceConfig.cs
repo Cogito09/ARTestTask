@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 [Serializable]
-public struct DiceFaceConfig
+public class DiceFaceConfig
 {
     [ReadOnly] public int FaceIndex;
     public int Score;

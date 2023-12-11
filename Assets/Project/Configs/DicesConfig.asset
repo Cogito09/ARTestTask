@@ -14,78 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Dices:
   - Id: 1
-    NumberOfFaces: -5
+    DevName: Dice_Twelewe_Faces
+    NumberOfFaces: 4
     PrefabId: 3
     Faces:
     - FaceIndex: 1
       Score: 0
       SymbolText: 
-      IsSymbolTextSameAsScore: 1
+      IsSymbolTextSameAsScore: 0
       IsUsingSymbolSprite: 0
       SymbolSprite: {fileID: 0}
     - FaceIndex: 2
       Score: 0
       SymbolText: 
-      IsSymbolTextSameAsScore: 1
+      IsSymbolTextSameAsScore: 0
       IsUsingSymbolSprite: 0
       SymbolSprite: {fileID: 0}
     - FaceIndex: 3
       Score: 0
       SymbolText: 
-      IsSymbolTextSameAsScore: 1
+      IsSymbolTextSameAsScore: 0
       IsUsingSymbolSprite: 0
       SymbolSprite: {fileID: 0}
     - FaceIndex: 4
       Score: 0
       SymbolText: 
-      IsSymbolTextSameAsScore: 1
-      IsUsingSymbolSprite: 0
-      SymbolSprite: {fileID: 0}
-    - FaceIndex: 5
-      Score: 0
-      SymbolText: 
-      IsSymbolTextSameAsScore: 1
-      IsUsingSymbolSprite: 0
-      SymbolSprite: {fileID: 0}
-    - FaceIndex: 6
-      Score: 0
-      SymbolText: 
-      IsSymbolTextSameAsScore: 1
-      IsUsingSymbolSprite: 0
-      SymbolSprite: {fileID: 0}
-    - FaceIndex: 7
-      Score: 0
-      SymbolText: 
-      IsSymbolTextSameAsScore: 1
-      IsUsingSymbolSprite: 0
-      SymbolSprite: {fileID: 0}
-    - FaceIndex: 8
-      Score: 0
-      SymbolText: 
-      IsSymbolTextSameAsScore: 1
-      IsUsingSymbolSprite: 0
-      SymbolSprite: {fileID: 0}
-    - FaceIndex: 9
-      Score: 0
-      SymbolText: 
-      IsSymbolTextSameAsScore: 1
-      IsUsingSymbolSprite: 0
-      SymbolSprite: {fileID: 0}
-    - FaceIndex: 10
-      Score: 0
-      SymbolText: 
-      IsSymbolTextSameAsScore: 1
-      IsUsingSymbolSprite: 0
-      SymbolSprite: {fileID: 0}
-    - FaceIndex: 11
-      Score: 0
-      SymbolText: 
-      IsSymbolTextSameAsScore: 1
-      IsUsingSymbolSprite: 0
-      SymbolSprite: {fileID: 0}
-    - FaceIndex: 12
-      Score: 0
-      SymbolText: 
-      IsSymbolTextSameAsScore: 1
+      IsSymbolTextSameAsScore: 0
       IsUsingSymbolSprite: 0
       SymbolSprite: {fileID: 0}

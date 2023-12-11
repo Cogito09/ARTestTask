@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
-
 using Vector3 = UnityEngine.Vector3;
 
+[ExecuteInEditMode]
 public class DiceBehaviour : MonoBehaviour
 {
+
     [SerializeField] private List<DiceFaceBehaviour> _faces;
     
     [SerializeField] private Rigidbody _rigidbody;
@@ -18,9 +21,9 @@ public class DiceBehaviour : MonoBehaviour
 
     [ReadOnly][SerializeField] private int _motionlessCounter;
     [SerializeField] private float _minMotionlessFramesToProceedResult;
-    [FormerlySerializedAs("_maxDistanceToRegisterPositonsAsEqual")] [SerializeField] private float _maxPositionsEqualityDistance;
+    [SerializeField] private float _maxPositionsEqualityDistance;
     [SerializeField] private float _maxRotationEqualityEulerAngleDifference;
-
+    
     public void Setup(DiceConfig diceConfig)
     {
         
@@ -53,7 +56,13 @@ public class DiceBehaviour : MonoBehaviour
     {
         _motionlessCounter = 0;
     }
-
+    
+    private void Update()
+    {
+        RegisterEditorHotkey();
+        //UpdatePointer();
+    }
+    
     private void FixedUpdate()
     {
         if (_isListeningForResult == false)
@@ -118,4 +127,135 @@ public class DiceBehaviour : MonoBehaviour
     {
 
     }
+
+
+#if UNITY_EDITOR
+    [SerializeField] private DiceFaceBehaviour _faceToPlacePosition;
+    private bool _wasRegistered = false;
+    
+    public void RegisterEditorHotkey()
+    {
+        if (_wasRegistered)
+        {
+            return;
+        }
+
+        _wasRegistered = true;
+        SceneView.onSceneGUIDelegate += view =>
+        {
+            var e = Event.current;
+            if (e == null)
+            {
+                return;
+            }
+
+            if (e.control == true)
+            {
+                Debug.Log($"control clicked");
+                UpdatePointer();
+            }
+        };
+    }
+    
+    private void UpdatePointer()
+    {
+        Debug.Log($"clicled space!");
+        if (_faceToPlacePosition == null)
+        {
+            return;
+        }
+        
+        if (SceneView.lastActiveSceneView == null)
+        {
+            return;
+        }
+        
+        Vector3 mousePosition = Event.current.mousePosition;
+        var mouseRay = HandleUtility.GUIPointToWorldRay(mousePosition);//SceneView.lastActiveSceneView.camera.ScreenPointToRay(mousePosition);// Camera.main.ScreenPointToRay();
+        var allHits = Physics.RaycastAll(mouseRay, 1000000f);
+        var isHit = false;
+        var hitPoint = Vector3.zero;    
+        allHits.ForEach(hit =>
+        {
+            if (hit.collider.gameObject.tag == "Dice")
+            {
+                isHit = true;
+                hitPoint = hit.point;
+            }
+        });
+       
+        if (isHit == false)
+        {
+            return;
+        }
+
+        _faceToPlacePosition.transform.position = hitPoint;
+        
+        var faceRotation =  Quaternion.LookRotation(_faceToPlacePosition.transform.localPosition, Vector3.up);
+        var vectorFromCenter = transform.position - _faceToPlacePosition.transform.position;
+        _faceToPlacePosition.transform.SetPositionAndRotation(_faceToPlacePosition.transform.position,faceRotation);
+    }
+    
+    [PropertyOrder(2)][Button]
+    public void SetupFacesRoatations()
+    {
+        if (_faces == null)
+        {
+            return;
+        }
+
+        for (var i = 0; i < _faces.Count; i++)
+        {
+            var face =_faces[i];
+            if (face != null)
+            {
+                var faceRotation =  Quaternion.LookRotation(face.transform.localPosition, Vector3.up);
+                var vectorFromCenter = transform.position - face.transform.position;
+                face.transform.SetPositionAndRotation(face.transform.position,faceRotation);
+            }
+        }
+        
+        PreviewFacesMode();
+    }
+
+    [PropertyOrder(2)][Button]
+    public void EnableSetPostionMode()
+    {
+        for (var i = 0; i < _faces.Count; i++)
+        {
+            var face = _faces[i];
+            face.SetupDebugMode(true);
+        }
+    }
+
+    [PropertyOrder(2)][Button]
+    public void PreviewFacesMode()
+    {
+        for (var i = 0; i < _faces.Count; i++)
+        {
+            var face = _faces[i];
+            face.SetupDebugMode(false);
+        }
+    }
+
+    [PropertyRange(0, "FaceMaxRange"), PropertyOrder(3)]
+    public float FaceSize = 1;
+    [PropertyOrder(4)]
+    public float FaceMaxRange = 5;
+
+    private void OnValidate()
+    {
+        _wasRegistered = false;
+        for (var i = 0; i < _faces.Count; i++)
+        {
+            var face = _faces[i];
+            if (face == null)
+            {
+                continue;
+            }
+            
+            face.SetupVisualSize(FaceSize);
+        }
+    }
+#endif
 }

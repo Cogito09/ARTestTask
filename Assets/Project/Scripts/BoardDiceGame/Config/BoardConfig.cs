@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class BoardConfig
@@ -7,7 +8,7 @@ public class BoardConfig
     public string DevName;
     
     [Prefab] public int BoardPrefab;
-    [Prefab] public int DicePrefab;
+    [FormerlySerializedAs("DicePrefab")] [Dice] public int Dice;
     [Prefab] public int DesktopPrefab;
     [Prefab] public int PointerPrefab;
     [Prefab] public int HandPrefab;
