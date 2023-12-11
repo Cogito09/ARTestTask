@@ -102,7 +102,6 @@ public class InputBehaviour : MonoBehaviour
     private void TryThrow()
     {
         var averageVelocity = GetAverageVelocity();
-        Debug.Log($"Tried throw with velocity {averageVelocity}");
         if (averageVelocity < _minVelocityForThrow)
         {
             ResetDice();
@@ -110,7 +109,7 @@ public class InputBehaviour : MonoBehaviour
             return;
         }
 
-        var downwardForce = new Vector3(0, (-1 )* -_downForce, 0);
+        var downwardForce = new Vector3(0, (-1 )* _downForce, 0);
         var forceVector = _currentMoveVector + downwardForce;
         Throw(averageVelocity,forceVector);
     }
@@ -137,7 +136,6 @@ public class InputBehaviour : MonoBehaviour
             ChangePointerAndHandState(HandAndPointerState.Visible);
         }
         
-        Debug.Log($"Velocity too slow, reseting.");
         BoardDiceGame.OnDiceRolledForScore();
     }
     
@@ -216,7 +214,6 @@ public class InputBehaviour : MonoBehaviour
 
     private void ChangePointerAndHandState(HandAndPointerState state)
     {
-        Debug.Log($"state id {state}");
         switch (state)
         {
             case HandAndPointerState.Unknown:

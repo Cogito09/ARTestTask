@@ -54,4 +54,4 @@ MonoBehaviour:
   _torqueBase: {x: 10000, y: 10000, z: 10000}
   _numberOfLastRegisteredVelocities: 4
   MaxRaycastDistance: 5000
-  _downForce: -0.2
+  _downForce: 0.2
