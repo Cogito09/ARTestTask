@@ -3,12 +3,12 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 [Serializable]
-public class DiceFaceConfig
+public struct DiceFaceConfig
 {
     [ReadOnly] public int FaceIndex;
     public int Score;
     [ShowIf("IsShowingSymbolTextInEditor")]public string SymbolText;
-    [ShowIf("IsShowingSymbolTextSameAsScore")]public bool IsSymbolTextSameAsScore = true;
+    [ShowIf("IsShowingSymbolTextSameAsScore")]public bool IsSymbolTextSameAsScore;
     [ShowIf("IsShowingIsUsingSymbolSprite")]public bool IsUsingSymbolSprite;
     [ShowIf("IsShowingSymbolSpritee")]public Sprite SymbolSprite;
     

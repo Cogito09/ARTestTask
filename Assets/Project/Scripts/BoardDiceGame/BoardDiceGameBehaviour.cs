@@ -45,7 +45,6 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         }
         
         yield return SpawnObjects(boardDiceGame);
-        SpawnDice(boardDiceGame);
         Initialize();
     }
 
@@ -54,6 +53,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         var diceConfigId = boardDiceGame.BoardConfig.Dice;
         var diceConfig = MainConfig.DicesConfig.GetConfig(diceConfigId);
        DiceBehaviour = GameMaster.Spawner.Spawn<DiceBehaviour>(diceConfig.DicePrefab);
+       DiceBehaviour.Setup(diceConfig);
     }
 
     private IEnumerator SpawnObjects(BoardDiceGame boardDiceGame)
@@ -62,6 +62,7 @@ public class BoardDiceGameBehaviour : MonoBehaviour
         Hand = GameMaster.Spawner.Spawn<HandBehaviour>(boardDiceGame.BoardConfig.HandPrefab);
         Pointer = GameMaster.Spawner.Spawn<PointerBehaviour>(boardDiceGame.BoardConfig.PointerPrefab);
         boardDesktop = GameMaster.Spawner.Spawn<BoardDesktopBehaviour>(boardDiceGame.BoardConfig.DesktopPrefab);
+        SpawnDice(boardDiceGame);
         yield return null;
     }
     
@@ -79,10 +80,18 @@ public class BoardDiceGameBehaviour : MonoBehaviour
     
     public void Unload()
     {
+        State = DiceGameState.Unknown;
+        
         BoardDiceTriggerAreaBehaviour.OnDiceInsidePlayground -= OnDiceInsidePlayground;
         DiceBehaviour.OnDiceResultCaptured -= OnDiceResultCaptured;
         DiceBehaviour.OnDiceFailedToCaptureResult -= OnDiceFailedToCaptureResult;
         DiceBehaviour.OnDiceUnableToGetClearResult -= OnDiceUnableToGetClearResult;
+        
+        Destroy(DiceBehaviour.gameObject);
+        Destroy(Input.gameObject);
+        Destroy(Hand.gameObject);
+        Destroy(Pointer.gameObject);
+        Destroy(boardDesktop.gameObject);
     }
 
     private void OnDiceUnableToGetClearResult()

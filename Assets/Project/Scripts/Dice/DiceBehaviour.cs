@@ -12,7 +12,6 @@ public class DiceBehaviour : MonoBehaviour
     [PropertyOrder(2)][InfoBox("Guide How to setup Dice")] 
     [InfoBox("1. First add mesh, and generate new collider. If collider doesnt get updated exit->enter prefab mode or edit in scene view")]
     [InfoBox("2. Put all needed Dice_Face.prefab 's for each face under root of this object")]
-   
     [InfoBox("3. Reference all the faces in Faces list underneith")]
     [SerializeField] private List<DiceFaceBehaviour> _faces;
     [SerializeField] private Rigidbody _rigidbody;
@@ -25,10 +24,51 @@ public class DiceBehaviour : MonoBehaviour
     [SerializeField] private float _minMotionlessFramesToProceedResult;
     [SerializeField] private float _maxPositionsEqualityDistance;
     [SerializeField] private float _maxRotationEqualityEulerAngleDifference;
+
+    private void Awake()
+    {
+        _faceToPlacePosition = null;
+    }
     
     public void Setup(DiceConfig diceConfig)
     {
+        if (diceConfig == null)
+        {
+            Debug.LogError($"DiceConfig is null");
+            return;
+        }
         
+        if (_faces == null)
+        {
+            Debug.LogError($"Faces list is null");
+            return;
+        }
+
+        var diceFacesList = diceConfig.Faces;
+        if (_faces.Count != diceFacesList.Count)
+        {
+            Debug.LogError($"Faces list count is not equal to configs faces count. Please check DicePrefab and DiceConfig Faces of CofngiId: {diceConfig}");
+            return;
+        }
+        
+        for (var i = 0; i < diceFacesList.Count; i++)
+        {
+            var diceFaceCfg = diceFacesList[i];
+            if (_faces.Count <= i)
+            {
+                Debug.LogError($"_faces.Count is to low");
+                continue;
+            }
+
+            var faceBehaviour = _faces[i];
+            if (faceBehaviour == null)
+            {
+                Debug.LogError($"faceBehaviour on index: {i} is null.");
+                continue;
+            }
+            
+            _faces[i].Setup(diceFaceCfg);
+        }
     }
     
     public void ChangeKinematic(bool b)
@@ -61,8 +101,14 @@ public class DiceBehaviour : MonoBehaviour
     
     private void Update()
     {
-        RegisterEditorHotkey();
-        //UpdatePointer();
+#if UNITY_EDITOR
+        if (Application.isPlaying == false)
+        {
+            RegisterEditorHotkey();
+        }
+#endif
+
+        
     }
     
     private void FixedUpdate()
@@ -129,7 +175,12 @@ public class DiceBehaviour : MonoBehaviour
     {
 
     }
-
+    
+    public void ResetVelocities()
+    {
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.angularVelocity = Vector3.zero;
+    }
 
 #if UNITY_EDITOR
 
@@ -198,14 +249,12 @@ public class DiceBehaviour : MonoBehaviour
 
         if (e.control == true)
         {
-            Debug.Log($"control clicked");
             UpdatePointer();
         }
     }
 
     private void UpdatePointer()
     {
-        Debug.Log($"clicled space!");
         if (_faceToPlacePosition == null)
         {
             return;
@@ -242,9 +291,4 @@ public class DiceBehaviour : MonoBehaviour
         _faceToPlacePosition.transform.SetPositionAndRotation(_faceToPlacePosition.transform.position,faceRotation);
     }
 #endif
-    public void ResetVelocities()
-    {
-        _rigidbody.velocity = Vector3.zero;
-        _rigidbody.angularVelocity = Vector3.zero;
-    }
 }

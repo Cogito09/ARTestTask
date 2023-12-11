@@ -13,6 +13,8 @@ public class BoardDiceGame : IDisposable
     
     public void Dispose()
     {
+        BoardConfig = null;
+        _save = null;
     }
 
     public void Initialize()

@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DiceFaceBehaviour : MonoBehaviour
 {
@@ -10,8 +11,10 @@ public class DiceFaceBehaviour : MonoBehaviour
     
     [SerializeField] private GameObject _gameplayViewHolder;
 
+    public DiceFaceConfig DiceConfig;
     public void Setup(DiceFaceConfig diceFaceConfig)
     {
+        DiceConfig = diceFaceConfig;
         _spriteHolder.gameObject.SetActive(diceFaceConfig.IsUsingSymbolSprite);
         if (diceFaceConfig.IsUsingSymbolSprite)
         {

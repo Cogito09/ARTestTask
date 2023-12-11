@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Cinemachine;
 using Project.Scripts;
 using UnityEngine;
 
@@ -17,8 +16,7 @@ public class GameMaster : MonoBehaviour
     public static Spawner Spawner => _instance._spawner;
     private bool _isGameLoaded;
     private bool IsGameLoaded => Instance == null ? false : Instance._isGameLoaded;
-
-
+    
     public static BoardDiceGameBehaviour CurrentActiveBoardDiceGameBehaviour => Instance._boardDiceGameBehaviour;
     private BoardDiceGameBehaviour _boardDiceGameBehaviour;
     private BoardDiceGameSave _save;
@@ -46,7 +44,7 @@ public class GameMaster : MonoBehaviour
     private IEnumerator LoadSave()
     {
         yield return null;
-        _save = new BoardDiceGameSave();
+        _save = ReadSaveFromPlayerPrefs();
     }
 
     private IEnumerator LoadBoardGame()
@@ -60,5 +58,30 @@ public class GameMaster : MonoBehaviour
         
         _boardDiceGameBehaviour = Spawner.Spawn<BoardDiceGameBehaviour>(boardConfig.BoardPrefab);
         yield return _boardDiceGameBehaviour.Setup(_boardDiceGame);
+    }
+
+    private void Unload()
+    {
+        WriteSaveToPlayerPrefs(_save);
+        
+        _boardDiceGame.Dispose();
+        _boardDiceGame = null;
+        
+        _boardDiceGameBehaviour.Unload();
+        Destroy(_boardDiceGameBehaviour);
+        _boardDiceGameBehaviour = null;
+    }
+
+    private void WriteSaveToPlayerPrefs(BoardDiceGameSave save)
+    {
+        //only works in editor
+        PlayerPrefs.SetString("Save",JsonUtility.ToJson(save));
+        PlayerPrefs.Save();
+    }
+
+    private BoardDiceGameSave ReadSaveFromPlayerPrefs()
+    {
+        var save = JsonUtility.FromJson<BoardDiceGameSave>(PlayerPrefs.GetString("Save",JsonUtility.ToJson(new BoardDiceGameSave())));
+        return save;
     }
 }

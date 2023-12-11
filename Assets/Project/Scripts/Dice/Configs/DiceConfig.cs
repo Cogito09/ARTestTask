@@ -28,7 +28,9 @@ public class DiceConfig
     {
         for (var i = 0; i < Faces.Count; i++)
         {
-            Faces[i].FaceIndex = i + 1;
+            var face = Faces[i];
+            face.FaceIndex = i + 1;
+            Faces[i] = face;
         }
     }
 }
