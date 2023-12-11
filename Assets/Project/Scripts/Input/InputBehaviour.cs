@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Project.Scripts;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
@@ -19,34 +17,33 @@ public enum HandAndPointerState
     
 public class InputBehaviour : MonoBehaviour
 {
+    [ReadOnly] public bool IsAbleToGrabDice;
+    [ReadOnly] public bool Grabbed;
+    
     [SerializeField] private float _maxVelocityForRandomThrow;
     [SerializeField] private float _minVelocityForRandomThrow;
-
     [SerializeField] private float _minVelocityForThrow;
-    [SerializeField]private float _throwModificator;
+    [SerializeField] private float _throwModificator;
     [SerializeField] private float _torqueForceRangeMin;
     [SerializeField] private float _torqueForceRangeMax;
     [SerializeField] private Vector3 _torqueBase;
     [SerializeField] private int _numberOfLastRegisteredVelocities;
-    [FormerlySerializedAs("MaxDistance")]  [SerializeField]private float MaxRaycastDistance = 5000;
+    [SerializeField] private float MaxRaycastDistance = 5000;
+    [SerializeField] private float _downForce = 0.3f;
     private readonly LinkedList<float> _lastVelocities = new LinkedList<float>();
     private Vector3 _lastPosition;
     private Vector3 _currentMoveVector;
+    private int _inputLayer;
 
-    private int InputLayer;
     private DiceBehaviour DiceBehaviour => GameMaster.CurrentActiveBoardDiceGameBehaviour.DiceBehaviour;
     private HandBehaviour Hand  => GameMaster.CurrentActiveBoardDiceGameBehaviour.Hand;
     private PointerBehaviour Pointer => GameMaster.CurrentActiveBoardDiceGameBehaviour.Pointer;
     private BoardDiceGameBehaviour BoardDiceGame => GameMaster.CurrentActiveBoardDiceGameBehaviour;
     
-    [ReadOnly] public bool IsAbleToGrabDice;
-    [ReadOnly] public bool Grabbed;
-    [SerializeField] private float _downForce = 0.3f;
-
-
+    
     public void Initialize()
     {
-        InputLayer =  LayerMask.GetMask("BoardInput");
+        _inputLayer =  LayerMask.GetMask("BoardInput");
         ResetVelocity();
     }
 
@@ -125,7 +122,7 @@ public class InputBehaviour : MonoBehaviour
         Throw(averageVelocity,forceVector);
     }
     
-    private void Throw(float velocity,Vector3 forceVector)
+    private void Throw(float velocity,Vector3 forceVector,bool ignorePointerUpdate = false)
     {
         DiceBehaviour.transform.SetParent(null);
         DiceBehaviour.ChangeKinematic(false);
@@ -142,7 +139,11 @@ public class InputBehaviour : MonoBehaviour
             );
         
         DiceBehaviour.Throw(throwForce,torqueForce);
-        ChangePointerAndHandState(HandAndPointerState.Visible);
+        if (ignorePointerUpdate == false)
+        {
+            ChangePointerAndHandState(HandAndPointerState.Visible);
+        }
+
         
         Debug.Log($"Velocity too slow, reseting.");
         BoardDiceGame.OnDiceRolledForScore();
@@ -164,7 +165,7 @@ public class InputBehaviour : MonoBehaviour
         var isReleased = Input.GetMouseButtonUp(0);
         var pointer = Input.mousePosition;
         var ray = GameMaster.MainCamera.ScreenPointToRay(new Vector3(pointer.x, pointer.y, 0));
-        var raycastHits = Physics.RaycastAll(ray,MaxRaycastDistance,InputLayer);
+        var raycastHits = Physics.RaycastAll(ray,MaxRaycastDistance,_inputLayer);
         
         if (Grabbed && isReleased)
         {
@@ -193,7 +194,6 @@ public class InputBehaviour : MonoBehaviour
         }
         else if (IsAbleToGrabDice && isHolding && isAbleToInteractWithDice)
         {
-            //Debug.Log($"Grabbed");
             Grabbed = true;
             GrabDice();
             ResetVelocity();
@@ -277,10 +277,10 @@ public class InputBehaviour : MonoBehaviour
         var randomizedVelocity = Random.Range(_minVelocityForRandomThrow,_maxVelocityForRandomThrow);
         var randomixedVector =  new Vector3(
             Random.Range(-1f,1f),
-            Random.Range(-1f,1f),
+            Random.Range(-1f,0.1f),
             Random.Range(-1f,1f)
             );
         
-        Throw(randomizedVelocity, randomixedVector.normalized);
+        Throw(randomizedVelocity, randomixedVector.normalized,true);
     }
 }
